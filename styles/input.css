@@ -1,0 +1,1751 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ca-surface: #f3faff;
+  --ca-surface-low: #eaf5fb;
+  --ca-surface-container: #dbf1fe;
+  --ca-surface-high: #eef8fd;
+  --ca-surface-highest: #d7edf8;
+  --ca-surface-lowest: #ffffff;
+  --ca-surface-bright: rgba(255, 255, 255, 0.82);
+  --ca-primary: #004564;
+  --ca-primary-container: #1c5d80;
+  --ca-secondary-container: #81f3e5;
+  --ca-on-secondary-container: #006f66;
+  --ca-tertiary-container: #c9f0f9;
+  --ca-on-tertiary-container: #0a5d74;
+  --ca-on-surface: #071e27;
+  --ca-on-surface-variant: #4d6570;
+  --ca-outline-ghost: rgba(193, 199, 209, 0.15);
+}
+
+@layer base {
+  body {
+    @apply antialiased;
+    background:
+      radial-gradient(circle at top left, rgba(129, 243, 229, 0.18), transparent 28%),
+      radial-gradient(circle at top right, rgba(28, 93, 128, 0.12), transparent 34%),
+      linear-gradient(180deg, var(--ca-surface) 0%, var(--ca-surface-low) 100%);
+    color: var(--ca-on-surface);
+    font-family: "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply rounded-[26px] shadow-glow;
+    background: color-mix(in srgb, var(--ca-surface-bright) 92%, transparent);
+    backdrop-filter: blur(12px);
+  }
+
+  .input-ui {
+    @apply w-full rounded-xl px-4 py-2.5 text-sm outline-none transition;
+    background: var(--ca-surface-highest);
+    color: var(--ca-on-surface);
+    box-shadow: inset 0 -2px 0 rgba(7, 30, 39, 0.06);
+    font-family: "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .input-ui::placeholder {
+    color: color-mix(in srgb, var(--ca-on-surface-variant) 72%, white);
+  }
+
+  .input-ui:focus {
+    background: var(--ca-surface-lowest);
+    box-shadow:
+      inset 0 -2px 0 var(--ca-primary),
+      0 0 0 4px rgba(28, 93, 128, 0.08);
+  }
+
+  .btn-primary {
+    @apply rounded-2xl px-4 py-2 text-sm font-medium text-white transition;
+    background: linear-gradient(135deg, var(--ca-primary) 0%, var(--ca-primary-container) 100%);
+    box-shadow: 0 14px 24px rgba(0, 69, 100, 0.14);
+    font-family: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .btn-secondary {
+    @apply rounded-2xl px-4 py-2 text-sm font-normal transition;
+    background: var(--ca-surface-highest);
+    color: var(--ca-on-surface);
+    box-shadow: inset 0 0 0 1px var(--ca-outline-ghost);
+  }
+
+  .job-tab {
+    @apply text-sm font-medium transition;
+    background: var(--ca-surface-lowest);
+    color: color-mix(in srgb, var(--ca-on-surface-variant) 78%, white);
+    box-shadow: inset 0 0 0 1px rgba(193, 199, 209, 0.35);
+  }
+
+  .btn-ghost {
+    @apply px-0 py-0 text-xs font-medium transition;
+    color: var(--ca-primary-container);
+  }
+
+  .btn-primary:hover {
+    filter: brightness(1.03);
+  }
+
+  .btn-secondary:hover,
+  .job-item:hover {
+    background: var(--ca-surface-container);
+  }
+
+  .module-card {
+    @apply rounded-[22px] p-2.5;
+    background: var(--ca-surface-container);
+  }
+
+  .paper-card {
+    @apply rounded-[20px] p-2.5;
+    background: var(--ca-surface-lowest);
+    box-shadow: inset 0 0 0 1px var(--ca-outline-ghost);
+  }
+
+  .title-display {
+    font-family: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: -0.028em;
+  }
+
+  .label-ui {
+    font-family: "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ca-on-surface-variant);
+  }
+
+  .pulse-badge {
+    @apply rounded-full px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.2em];
+    background: var(--ca-secondary-container);
+    color: var(--ca-on-secondary-container);
+  }
+
+  .brand-icon {
+    @apply inline-flex h-9 w-9 items-center justify-center rounded-xl;
+    background: var(--ca-surface-lowest);
+    box-shadow: inset 0 0 0 1px var(--ca-outline-ghost);
+  }
+
+  .brand-icon svg {
+    @apply h-5 w-5;
+  }
+
+  .linkedin-brand {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(234, 245, 251, 0.96) 100%);
+  }
+
+  .action-btn {
+    @apply flex items-center justify-center gap-2 rounded-2xl px-4 py-2.5 text-[14px] font-medium transition;
+    font-family: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .action-btn-primary {
+    color: white;
+    background: linear-gradient(135deg, var(--ca-primary) 0%, var(--ca-primary-container) 100%);
+    box-shadow: 0 14px 24px rgba(0, 69, 100, 0.14);
+  }
+
+  .action-btn-secondary {
+    color: var(--ca-on-surface);
+    background: var(--ca-surface-lowest);
+    box-shadow: inset 0 0 0 1px var(--ca-outline-ghost);
+  }
+
+  .source-grid {
+    @apply grid grid-cols-2 gap-2;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 4px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(28, 93, 128, 0.4) rgba(255, 255, 255, 0.6);
+  }
+
+  .source-grid::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .source-grid::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 999px;
+  }
+
+  .source-grid::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(0, 69, 100, 0.6) 0%, rgba(28, 93, 128, 0.4) 100%);
+    border-radius: 999px;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+  }
+
+  .source-grid::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(0, 69, 100, 0.7) 0%, rgba(28, 93, 128, 0.5) 100%);
+  }
+
+  .source-card {
+    @apply flex items-center gap-2.5 rounded-[18px] px-3 py-2.5 text-left transition;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: inset 0 0 0 1px rgba(193, 199, 209, 0.22);
+  }
+
+  .source-card:hover {
+    background: var(--ca-surface-high);
+    box-shadow: inset 0 0 0 1px rgba(28, 93, 128, 0.16);
+    transform: translateY(-1px);
+  }
+
+  .source-card-active {
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 12px 22px rgba(7, 30, 39, 0.06), inset 0 0 0 1px rgba(28, 93, 128, 0.18);
+  }
+
+  .source-card-copy {
+    @apply flex min-w-0 flex-1 flex-col;
+  }
+
+  .source-card-title {
+    @apply truncate text-[13px] font-medium;
+    color: var(--ca-on-surface);
+    font-family: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .source-card-meta {
+    @apply mt-0.5 text-[11px];
+    color: var(--ca-on-surface-variant);
+  }
+
+  .source-card-mark {
+    @apply inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-[11px] font-semibold;
+    background: var(--ca-surface-highest);
+    color: var(--ca-primary);
+    box-shadow: inset 0 0 0 1px rgba(193, 199, 209, 0.18);
+    font-family: Manrope, Inter, ui-sans-serif, system-ui, sans-serif;
+  }
+
+  .source-favicon-img {
+    @apply inline-flex shrink-0 items-center justify-center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: inset 0 0 0 1px rgba(193, 199, 209, 0.16);
+    object-fit: contain;
+    padding: 4px;
+  }
+
+  .source-stage {
+    @apply flex h-full min-h-0 flex-col rounded-[28px] p-4;
+    background: #ffffff;
+    box-shadow: inset 0 0 0 1px rgba(28, 93, 128, 0.08), 0 18px 40px rgba(7, 30, 39, 0.04);
+  }
+
+  .source-scroll-area {
+    @apply min-h-0 flex-1 overflow-y-auto pr-1;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(28, 93, 128, 0.24) rgba(255, 255, 255, 0.72);
+  }
+
+  .source-scroll-area::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .source-scroll-area::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.72);
+    border-radius: 999px;
+  }
+
+  .source-scroll-area::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(15, 93, 134, 0.34) 0%, rgba(39, 101, 240, 0.24) 100%);
+    border-radius: 999px;
+    border: 2px solid rgba(255, 255, 255, 0.72);
+  }
+
+  .source-floating-bar {
+    @apply mt-3 shrink-0;
+    position: sticky;
+    bottom: 0;
+    padding-top: 10px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.96) 24%, rgba(255, 255, 255, 1) 100%);
+  }
+
+  .source-step-badge {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em];
+    background: rgba(46, 111, 255, 0.1);
+    color: #2457d6;
+  }
+
+  .source-hero-title {
+    @apply mt-4 text-[22px] font-semibold leading-[1.08];
+    color: #10233e;
+    font-family: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: -0.045em;
+  }
+
+  .source-hero-copy {
+    @apply mt-2 text-[13px] leading-6;
+    color: #667892;
+  }
+
+  .source-section-label {
+    @apply mt-6 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em];
+    color: #2c5fe8;
+  }
+
+  .source-section-label-muted {
+    color: #7c8ca4;
+  }
+
+  .source-primary-card {
+    @apply mt-3 flex items-center justify-between gap-3 rounded-[22px] px-4 py-4 text-left transition;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1.5px solid rgba(38, 94, 234, 0.92);
+    box-shadow: 0 18px 34px rgba(46, 111, 255, 0.14), inset 0 0 0 1px rgba(255, 255, 255, 0.72);
+  }
+
+  .source-primary-card .source-favicon-img {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    padding: 6px;
+  }
+
+  .source-primary-check {
+    @apply inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white;
+    background: linear-gradient(180deg, #2765f0 0%, #1d56d8 100%);
+    box-shadow: 0 10px 24px rgba(39, 101, 240, 0.24);
+  }
+
+  .source-primary-title {
+    @apply text-[15px] font-semibold;
+    color: #12253f;
+    font-family: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .source-primary-meta {
+    @apply mt-0.5 text-[11px];
+    color: #7b8ba0;
+  }
+
+  .source-pill {
+    @apply mt-2 inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-medium;
+    background: rgba(46, 111, 255, 0.12);
+    color: #2457d6;
+  }
+
+  .source-disabled-grid {
+    @apply mt-3 grid grid-cols-2 gap-3;
+  }
+
+  .source-card-disabled {
+    opacity: 1 !important;
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: inset 0 0 0 1px rgba(193, 199, 209, 0.3);
+    filter: saturate(0.08);
+  }
+
+  .source-card-disabled .source-favicon-img {
+    opacity: 0.82;
+  }
+
+  .source-lock {
+    @apply inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full;
+    background: rgba(148, 163, 184, 0.12);
+    color: #94a3b8;
+  }
+
+  .source-ai-card {
+    @apply mt-5 flex items-center justify-between gap-3 rounded-[24px] px-4 py-4;
+    background: linear-gradient(135deg, rgba(243, 237, 255, 0.88) 0%, rgba(241, 246, 255, 0.94) 100%);
+    box-shadow: inset 0 0 0 1px rgba(153, 170, 255, 0.14);
+  }
+
+  #jobActionStep {
+    background: #ffffff;
+  }
+
+  .source-ai-icon {
+    @apply inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full;
+    background: rgba(111, 91, 255, 0.1);
+    color: #6146ff;
+  }
+
+  .source-ai-title {
+    @apply text-[15px] font-semibold;
+    color: #4f46e5;
+  }
+
+  .source-ai-copy {
+    @apply mt-1 text-[12px] leading-6;
+    color: #55657e;
+  }
+
+  .source-cta {
+    @apply flex w-full items-center justify-center gap-3 rounded-[20px] px-4 py-3 text-[16px] font-semibold text-white transition;
+    background: linear-gradient(90deg, #0f63ef 0%, #3749f5 100%);
+    box-shadow: 0 20px 40px rgba(27, 93, 239, 0.24);
+    font-family: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .source-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 24px 42px rgba(27, 93, 239, 0.28);
+  }
+
+  .source-footer-note {
+    @apply mt-4 flex items-center justify-center gap-2 text-[11px];
+    color: #7b8ba0;
+  }
+
+  .back-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl px-4 text-sm font-medium transition;
+    color: #0f5d86;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: inset 0 0 0 1px rgba(15, 93, 134, 0.16);
+    font-family: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .back-btn:hover {
+    background: #eef7fb;
+    box-shadow: inset 0 0 0 1px rgba(15, 93, 134, 0.24);
+  }
+
+  .back-btn-icon {
+    @apply inline-flex h-5 w-5 items-center justify-center rounded-full text-[12px];
+    background: rgba(15, 93, 134, 0.1);
+    color: #0f5d86;
+  }
+
+  .action-btn-icon {
+    @apply inline-flex h-4 w-4 items-center justify-center shrink-0;
+  }
+
+  .action-btn-icon svg {
+    @apply h-4 w-4;
+  }
+
+  .recommendation-card {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(246, 251, 255, 0.98) 100%);
+  }
+
+  .job-logo-shell {
+    @apply inline-flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl;
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: inset 0 0 0 1px rgba(193, 199, 209, 0.2);
+  }
+
+  .job-logo-image {
+    @apply h-8 w-8 object-contain;
+  }
+
+  .match-pill {
+    @apply inline-flex min-w-[74px] shrink-0 items-center justify-center rounded-[22px] px-3 py-2 text-[18px] font-medium;
+    font-family: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: -0.02em;
+    box-shadow: inset 0 0 0 1px rgba(193, 199, 209, 0.12);
+  }
+
+  .match-pill-top {
+    background: linear-gradient(135deg, #0a4f73 0%, #1c6d95 100%);
+    color: #f5fbff;
+    box-shadow: 0 14px 24px rgba(10, 79, 115, 0.18);
+  }
+
+  .match-pill-good {
+    background: linear-gradient(135deg, #8fe6db 0%, #c7f3ea 100%);
+    color: #0a5758;
+    box-shadow: 0 14px 24px rgba(10, 87, 88, 0.12);
+  }
+
+  .match-pill-medium {
+    background: linear-gradient(135deg, #e6f2fb 0%, #f8fcff 100%);
+    color: #315264;
+  }
+
+  .match-pill-low {
+    background: linear-gradient(135deg, #f3f7f9 0%, #fcfdfe 100%);
+    color: #687b86;
+  }
+
+  .soft-pill {
+    @apply inline-flex items-center rounded-full px-3 py-1.5 text-[11px] font-medium;
+    background: var(--ca-surface-highest);
+    color: var(--ca-on-surface-variant);
+  }
+
+  .soft-pill-easy {
+    background: linear-gradient(135deg, rgba(129, 243, 229, 0.38) 0%, rgba(201, 240, 249, 0.72) 100%);
+    color: #05665f;
+  }
+
+  .plan-card {
+    @apply rounded-[22px] p-3;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(240, 249, 255, 0.96) 100%);
+    box-shadow: inset 0 0 0 1px rgba(28, 93, 128, 0.1), 0 14px 28px rgba(7, 30, 39, 0.05);
+  }
+
+  .plan-badge {
+    @apply inline-flex items-center gap-1 rounded-full px-3 py-1 text-[10px] font-medium uppercase tracking-[0.18em];
+    background: rgba(129, 243, 229, 0.42);
+    color: #05665f;
+  }
+
+  .plan-feature {
+    @apply rounded-2xl px-3 py-2 text-[12px] leading-5;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--ca-on-surface-variant);
+    box-shadow: inset 0 0 0 1px rgba(193, 199, 209, 0.18);
+  }
+
+  .plan-progress {
+    @apply h-2.5 overflow-hidden rounded-full;
+    background: rgba(12, 87, 118, 0.12);
+  }
+
+  .plan-progress-bar {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #0f5d86 0%, #1c6d95 100%);
+    transition: width 0.2s ease;
+  }
+
+  .detail-chip {
+    @apply rounded-2xl px-3 py-2 text-[12px] font-semibold transition;
+    background: var(--ca-surface-highest);
+    color: var(--ca-on-surface-variant);
+    box-shadow: inset 0 0 0 1px var(--ca-outline-ghost);
+  }
+
+  .detail-chip-active {
+    background: var(--ca-surface-lowest);
+    color: var(--ca-on-surface);
+    box-shadow: inset 0 0 0 1px rgba(28, 93, 128, 0.14);
+  }
+
+  .detail-panel {
+    background: linear-gradient(180deg, rgba(243, 250, 255, 0.94) 0%, rgba(255, 255, 255, 0.96) 100%);
+  }
+
+  .detail-bullet {
+    @apply rounded-2xl px-3 py-2 text-[12px] leading-5;
+    background: rgba(234, 245, 251, 0.88);
+    color: var(--ca-on-surface-variant);
+  }
+
+  .magic-loader {
+    @apply inline-flex items-center gap-2 rounded-xl px-3 py-2 text-[12px] font-medium;
+    background: rgba(201, 240, 249, 0.72);
+    color: var(--ca-on-tertiary-container);
+  }
+
+  .magic-spinner {
+    @apply inline-block h-3.5 w-3.5 rounded-full;
+    border: 2px solid rgba(10, 93, 116, 0.25);
+    border-top-color: rgba(10, 93, 116, 0.9);
+    animation: magic-spin 0.75s linear infinite;
+  }
+
+  .jobs-progress-shell {
+    @apply mx-auto max-w-[220px];
+  }
+
+  .jobs-progress-track {
+    @apply h-2 overflow-hidden rounded-full;
+    background: rgba(219, 241, 254, 0.95);
+    box-shadow: inset 0 0 0 1px rgba(193, 199, 209, 0.18);
+  }
+
+  .jobs-progress-bar {
+    @apply h-full rounded-full;
+    width: 42%;
+    background: linear-gradient(90deg, rgba(10, 102, 194, 0.2) 0%, rgba(10, 102, 194, 0.88) 48%, rgba(10, 102, 194, 0.2) 100%);
+    animation: jobs-progress-slide 1.15s ease-in-out infinite;
+  }
+
+  .cv-editor {
+    min-height: 360px;
+    max-height: none;
+    overflow-y: visible;
+    font-size: 12px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+  }
+
+  .cv-footer {
+    @apply grid grid-cols-2 gap-2;
+    position: sticky;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.95) 35%);
+    padding-top: 8px;
+  }
+
+  .save-success {
+    @apply text-[11px] font-semibold;
+    color: #0a6c63;
+  }
+
+  .action-btn-icon-plain {
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  @keyframes magic-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes jobs-progress-slide {
+    0% {
+      transform: translateX(-110%);
+    }
+
+    100% {
+      transform: translateX(290%);
+    }
+  }
+
+  .fit-badge {
+    @apply rounded-full px-3 py-2 text-center;
+    background: linear-gradient(135deg, rgba(0, 69, 100, 0.96) 0%, rgba(28, 93, 128, 0.92) 100%);
+    color: white;
+    box-shadow: 0 18px 30px rgba(0, 69, 100, 0.14);
+  }
+
+  .job-item {
+    @apply w-full rounded-[18px] px-3 py-3 text-left transition;
+    background: var(--ca-surface-lowest);
+    box-shadow: inset 0 0 0 1px var(--ca-outline-ghost);
+    transform: translateY(0);
+  }
+
+  .job-item-active {
+    background: linear-gradient(135deg, rgba(0, 69, 100, 0.94) 0%, rgba(28, 93, 128, 0.9) 100%);
+    color: white;
+    box-shadow: 0 20px 34px rgba(0, 69, 100, 0.16);
+  }
+
+  .job-item:hover {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(238, 248, 253, 0.98) 100%);
+    box-shadow: 0 16px 28px rgba(7, 30, 39, 0.06), inset 0 0 0 1px rgba(28, 93, 128, 0.12);
+    transform: translateY(-1px);
+  }
+
+  .job-item-active:hover {
+    background: linear-gradient(135deg, rgba(0, 69, 100, 0.96) 0%, rgba(28, 93, 128, 0.92) 100%);
+    transform: translateY(-1px);
+  }
+
+  .job-meta {
+    color: var(--ca-on-surface-variant);
+  }
+
+  .job-meta-active {
+    color: rgba(255, 255, 255, 0.76);
+  }
+
+  .job-inline-btn {
+    @apply inline-flex items-center justify-center rounded-full px-3 py-1.5 text-[11px] font-semibold transition;
+    background: var(--ca-surface-highest);
+    color: var(--ca-on-surface);
+    box-shadow: inset 0 0 0 1px rgba(193, 199, 209, 0.22);
+  }
+
+  .job-inline-btn:hover {
+    background: var(--ca-surface-container);
+  }
+
+  .job-inline-btn-active {
+    background: rgba(255, 255, 255, 0.18);
+    color: white;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+  }
+
+  .job-inline-btn-primary {
+    background: linear-gradient(135deg, var(--ca-primary) 0%, var(--ca-primary-container) 100%);
+    color: white;
+    box-shadow: 0 12px 20px rgba(0, 69, 100, 0.12);
+  }
+
+  .job-inline-btn-primary:hover {
+    filter: brightness(1.04);
+  }
+
+  .intro-slide {
+    @apply absolute inset-0 rounded-[20px] p-5 opacity-0 transition;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(219, 241, 254, 0.96) 100%);
+    box-shadow: inset 0 0 0 1px rgba(193, 199, 209, 0.28);
+    transform: translateX(14px) scale(0.98);
+    pointer-events: none;
+  }
+
+  .intro-slide.active {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .auth-shell {
+    @apply rounded-[24px] px-4 py-4;
+    background: #ffffff;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+  }
+
+  /* Header con logo */
+  .auth-header {
+    @apply flex items-center gap-2 mb-4;
+  }
+
+  .auth-logo-icon {
+    @apply h-7 w-7;
+  }
+
+  .auth-logo-text {
+    @apply text-[13px] font-semibold tracking-[0.06em];
+    color: #374151;
+    font-family: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  }
+
+  /* Hero section */
+  .auth-hero {
+    @apply flex items-start justify-between gap-3 mb-5;
+  }
+
+  .auth-hero-copy {
+    @apply flex-1 min-w-0;
+  }
+
+  .auth-hero-title {
+    @apply text-[18px] font-bold leading-tight;
+    color: #0f172a;
+    font-family: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  }
+
+  .auth-hero-title-accent {
+    color: #3b82f6;
+  }
+
+  .auth-hero-text {
+    @apply mt-2 text-[11px] leading-5;
+    color: #6b7280;
+  }
+
+  /* Ilustración del documento */
+  .auth-hero-art {
+    @apply relative flex-shrink-0;
+    width: 100px;
+    height: 110px;
+  }
+
+  .auth-art-document {
+    @apply relative w-[72px] h-[88px] rounded-lg;
+    background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15), 0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+  }
+
+  .auth-art-document::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 16px;
+    height: 16px;
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+    border-bottom-left-radius: 4px;
+  }
+
+  .auth-art-doc-lines {
+    @apply absolute top-4 left-3 flex flex-col gap-2;
+  }
+
+  .auth-art-doc-line {
+    @apply h-1.5 rounded-full;
+    background: #e2e8f0;
+  }
+
+  .auth-art-upload-btn {
+    @apply absolute -bottom-3 -right-3 h-9 w-9 rounded-full flex items-center justify-center;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  }
+
+  .auth-art-upload-btn svg {
+    @apply h-4 w-4;
+  }
+
+  /* Sparkles decorativos */
+  .auth-art-sparkle {
+    @apply absolute w-2 h-2;
+    background: #dbeafe;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  }
+
+  .auth-art-sparkle-1 { top: 4px; right: 8px; }
+  .auth-art-sparkle-2 { top: 24px; left: -4px; }
+  .auth-art-sparkle-3 { bottom: 16px; right: -2px; }
+
+  /* Divider con label */
+  .auth-divider-section {
+    @apply flex items-center justify-center gap-3 mb-4;
+  }
+
+  .auth-divider-line {
+    @apply flex-1 h-px;
+    background: #e5e7eb;
+  }
+
+  .auth-divider-label {
+    @apply text-[10px] font-semibold uppercase tracking-[0.2em];
+    color: #3b82f6;
+    white-space: nowrap;
+  }
+
+  /* Campos de input */
+  .auth-field {
+    @apply relative mt-3 flex items-center rounded-xl;
+    min-height: 50px;
+    background: #ffffff;
+    border: 1.5px solid #e5e7eb;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .auth-field:focus-within {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  .auth-field-icon {
+    @apply ml-3.5 inline-flex h-5 w-5 shrink-0 items-center justify-center;
+    color: #9ca3af;
+  }
+
+  .auth-field-icon svg,
+  .auth-field-action svg {
+    @apply h-5 w-5;
+  }
+
+  .auth-input {
+    @apply h-full w-full bg-transparent text-[13px] outline-none;
+    padding: 0 14px 0 10px;
+    color: #1f2937;
+  }
+
+  .auth-input::placeholder {
+    color: #9ca3af;
+  }
+
+  .auth-input-password {
+    padding-right: 44px;
+  }
+
+  .auth-field-action {
+    @apply absolute right-2.5 inline-flex h-8 w-8 items-center justify-center rounded-full transition;
+    color: #9ca3af;
+  }
+
+  .auth-field-action:hover {
+    background: rgba(59, 130, 246, 0.08);
+    color: #3b82f6;
+  }
+
+  /* Fila de checkbox y link */
+  .auth-row {
+    @apply mt-3 flex items-center justify-between gap-2;
+  }
+
+  .auth-check {
+    @apply inline-flex items-center gap-2 text-[11px];
+    color: #4b5563;
+  }
+
+  .auth-check input {
+    @apply h-4 w-4 rounded;
+    accent-color: #3b82f6;
+    border-color: #d1d5db;
+  }
+
+  .auth-link {
+    @apply text-[11px] font-medium transition;
+    color: #3b82f6;
+  }
+
+  .auth-link:hover {
+    color: #2563eb;
+  }
+
+  /* Botón submit */
+  .auth-submit-btn {
+    @apply mt-4 w-full rounded-xl py-3.5 text-[14px] font-semibold text-white transition flex items-center justify-center gap-2;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.25);
+    font-family: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  }
+
+  .auth-submit-btn:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+  }
+
+  .auth-submit-btn:active {
+    transform: translateY(0);
+  }
+
+  .auth-submit-btn:disabled {
+    opacity: 0.72;
+    cursor: wait;
+    transform: none;
+  }
+
+  .auth-btn-arrow {
+    @apply h-4 w-4;
+  }
+
+  /* Switch entre login/register */
+  .auth-inline-switch {
+    @apply mt-4 text-center text-[11px];
+    color: #6b7280;
+  }
+
+  .auth-inline-link {
+    @apply font-semibold transition;
+    color: #3b82f6;
+  }
+
+  .auth-inline-link:hover {
+    color: #2563eb;
+  }
+
+  /* Error */
+  .auth-error {
+    @apply mt-3 rounded-xl px-3 py-2 text-center text-[11px] font-medium;
+    background: rgba(254, 226, 226, 0.9);
+    color: #dc2626;
+    border: 1px solid rgba(252, 165, 165, 0.5);
+  }
+
+  /* Panel de auth */
+  .auth-panel {
+    @apply w-full;
+  }
+
+  .intro-dot {
+    @apply h-3 w-3 rounded-full transition;
+    background: rgba(112, 162, 230, 0.34);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72);
+  }
+
+  .intro-dot.active {
+    @apply w-8;
+    background: linear-gradient(135deg, #0c489f 0%, #2e73de 100%);
+    box-shadow: 0 8px 18px rgba(24, 76, 165, 0.2);
+  }
+
+  .intro-shell {
+    @apply flex h-full min-h-0 flex-col;
+  }
+
+  /* ===== Nuevo diseño de bienvenida ===== */
+
+  .intro-shell-new {
+    @apply flex h-full min-h-0 flex-col;
+    background: #ffffff;
+  }
+
+  /* Welcome section */
+  .intro-welcome-bar {
+    @apply w-1 h-4 rounded-full;
+    background: #3b82f6;
+  }
+
+  .intro-welcome-label {
+    @apply text-[10px] font-semibold uppercase tracking-[0.2em];
+    color: #3b82f6;
+  }
+
+  .intro-welcome-name {
+    @apply text-[22px] font-bold capitalize;
+    color: #0f172a;
+    font-family: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  }
+
+  /* Center step card */
+  .intro-center {
+    @apply flex justify-center;
+  }
+
+  .intro-step-card {
+    @apply rounded-2xl px-4 py-4 w-full;
+    background: #ffffff;
+    border: 1.5px solid #e5e7eb;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  }
+
+  .intro-step-row {
+    @apply flex items-center gap-3;
+  }
+
+  .intro-step-badge {
+    @apply flex-shrink-0 h-11 w-11 rounded-full flex items-center justify-center text-[15px] font-bold;
+    color: #0f172a;
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  }
+
+  .intro-step-icon {
+    @apply flex-shrink-0 h-11 w-11 rounded-xl flex items-center justify-center;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+  }
+
+  .intro-step-icon svg {
+    @apply h-5 w-5;
+  }
+
+  .intro-step-copy {
+    @apply flex-1 min-w-0;
+  }
+
+  .intro-step-title {
+    @apply text-[13px] font-semibold;
+    color: #0f172a;
+    font-family: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  }
+
+  .intro-step-text {
+    @apply mt-1 text-[11px] leading-4;
+    color: #6b7280;
+  }
+
+  /* Features row */
+  .intro-features {
+    @apply flex items-center gap-4 py-3;
+  }
+
+  .intro-feature-item {
+    @apply flex-1 flex items-center gap-2;
+  }
+
+  .intro-feature-icon {
+    @apply flex-shrink-0 h-9 w-9 rounded-lg flex items-center justify-center;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+  }
+
+  .intro-feature-icon svg {
+    @apply h-4 w-4;
+  }
+
+  .intro-feature-copy {
+    @apply min-w-0;
+  }
+
+  .intro-feature-title {
+    @apply text-[11px] font-semibold;
+    color: #0f172a;
+  }
+
+  .intro-feature-sub {
+    @apply mt-0.5 text-[10px];
+    line-height: 1.3;
+    color: #6b7280;
+  }
+
+  /* Actions */
+  .intro-actions {
+    @apply grid grid-cols-2 gap-3;
+  }
+
+  .intro-btn-skip,
+  .intro-btn-start {
+    @apply inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl px-4 text-[13px] font-semibold transition;
+    font-family: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  }
+
+  .intro-btn-skip {
+    color: #4b5563;
+    background: #ffffff;
+    border: 1.5px solid #e5e7eb;
+  }
+
+  .intro-btn-skip:hover {
+    background: #f9fafb;
+  }
+
+  .intro-btn-start {
+    color: white;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.2);
+  }
+
+  .intro-btn-start:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+  }
+
+  .intro-btn-arrow {
+    @apply h-4 w-4;
+  }
+
+  /* Trust */
+  .intro-trust {
+    @apply flex items-center justify-center gap-2;
+  }
+
+  .intro-trust-icon {
+    @apply h-7 w-7 rounded-full flex items-center justify-center;
+    background: #eff6ff;
+  }
+
+  .intro-trust-icon svg {
+    @apply h-3.5 w-3.5;
+  }
+
+  .intro-trust-text {
+    @apply text-[10px];
+    color: #6b7280;
+  }
+
+  /* ===== CV Upload Step ===== */
+
+  .cv-upload-shell {
+    @apply flex h-full min-h-0 flex-col;
+    background: #ffffff;
+  }
+
+  /* Progress */
+  .cv-progress-header {
+    @apply px-4 pt-3 pb-2;
+  }
+
+  .cv-progress-label {
+    @apply text-[10px] font-semibold uppercase tracking-[0.15em];
+    color: #3b82f6;
+  }
+
+  .cv-progress-track {
+    @apply flex gap-1.5 mt-1.5;
+  }
+
+  .cv-progress-bar {
+    @apply h-1 flex-1 rounded-full;
+    background: #e5e7eb;
+  }
+
+  .cv-progress-bar-active {
+    background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+  }
+
+  /* Title */
+  .cv-title-section {
+    @apply flex items-start justify-between px-4 pb-2;
+  }
+
+  .cv-title {
+    @apply text-[18px] font-bold;
+    color: #0f172a;
+    font-family: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  }
+
+  .cv-subtitle {
+    @apply mt-0.5 text-[11px];
+    color: #6b7280;
+  }
+
+  /* Upload card */
+  .cv-upload-card {
+    @apply rounded-2xl px-4 py-3 mx-4;
+    background: #ffffff;
+    border: 1.5px solid #e5e7eb;
+  }
+
+  .cv-upload-header {
+    @apply flex items-center gap-2.5 mb-3;
+  }
+
+  .cv-upload-icon {
+    @apply flex-shrink-0 h-10 w-10 rounded-xl flex items-center justify-center;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+  }
+
+  .cv-upload-icon svg {
+    @apply h-5 w-5;
+  }
+
+  .cv-upload-title {
+    @apply text-[13px] font-semibold;
+    color: #0f172a;
+  }
+
+  .cv-upload-formats {
+    @apply mt-0.5 text-[10px];
+    color: #6b7280;
+  }
+
+  /* Drop zone */
+  .cv-drop-zone {
+    @apply rounded-xl border-2 border-dashed border-[#d1d5db] py-4 flex flex-col items-center justify-center mb-3;
+    background: #fafbfc;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .cv-drop-zone:hover,
+  .cv-drop-zone.dragover {
+    border-color: #3b82f6;
+    background: #eff6ff;
+  }
+
+  .cv-drop-icon {
+    @apply h-8 w-8 mb-1.5;
+  }
+
+  .cv-drop-text {
+    @apply text-[12px] font-semibold;
+    color: #0f172a;
+  }
+
+  .cv-drop-subtext {
+    @apply mt-0.5 text-[10px];
+    color: #6b7280;
+  }
+
+  /* Upload button */
+  .cv-upload-btn {
+    @apply flex items-center justify-center gap-2 w-full h-11 rounded-xl text-[13px] font-semibold transition;
+    color: white;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.2);
+  }
+
+  .cv-upload-btn:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+  }
+
+  .cv-upload-btn svg {
+    @apply h-4 w-4;
+  }
+
+  .cv-upload-hint {
+    @apply mt-1.5 text-center text-[9px];
+    color: #9ca3af;
+  }
+
+  .cv-file-name {
+    @apply mt-1.5 text-center text-[11px] font-medium;
+    color: #0f172a;
+  }
+
+  .cv-upload-progress-card {
+    @apply rounded-xl px-3 py-2.5 flex items-center gap-3;
+    background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+    border: 1.5px solid #bfdbfe;
+  }
+
+  .cv-upload-spinner {
+    @apply flex-shrink-0 h-5 w-5;
+    border: 2px solid #bfdbfe;
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    animation: cv-spin 0.8s linear infinite;
+  }
+
+  @keyframes cv-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .cv-upload-progress-content {
+    @apply flex-1 min-w-0;
+  }
+
+  .cv-upload-progress-label {
+    @apply text-[12px] font-semibold;
+    color: #1e40af;
+  }
+
+  .cv-upload-progress-hint {
+    @apply mt-0.5 text-[10px];
+    color: #60a5fa;
+  }
+
+  /* Stats row */
+  .cv-stats-row {
+    @apply grid grid-cols-2 gap-2.5 mx-4 mt-3;
+  }
+
+  .cv-stat-card {
+    @apply rounded-xl px-3 py-2.5 flex items-start gap-2.5;
+    background: #ffffff;
+    border: 1.5px solid #e5e7eb;
+  }
+
+  .cv-stat-icon {
+    @apply flex-shrink-0 h-9 w-9 rounded-full flex items-center justify-center;
+    background: #eff6ff;
+  }
+
+  .cv-stat-icon svg {
+    @apply h-[18px] w-[18px];
+  }
+
+  .cv-stat-content {
+    @apply flex-1 min-w-0;
+  }
+
+  .cv-stat-label {
+    @apply text-[8px] font-semibold uppercase tracking-[0.12em];
+    color: #6b7280;
+  }
+
+  .cv-stat-value {
+    @apply mt-0.5 text-[12px] font-semibold;
+    color: #0f172a;
+  }
+
+  .cv-stat-id {
+    @apply font-mono text-[10px];
+  }
+
+  .cv-stat-progress {
+    @apply mt-1 h-1 rounded-full overflow-hidden;
+    background: #e5e7eb;
+  }
+
+  .cv-stat-progress-bar {
+    @apply h-full rounded-full transition-all duration-500;
+    background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+  }
+
+  .cv-stat-hint {
+    @apply mt-0.5 text-[9px];
+    color: #9ca3af;
+  }
+
+  /* Preview */
+  .cv-preview-card {
+    @apply rounded-xl px-3 py-2.5 mx-4 mt-3 flex items-center gap-2.5;
+    background: #ffffff;
+    border: 1.5px solid #e5e7eb;
+  }
+
+  .cv-preview-icon {
+    @apply flex-shrink-0 h-9 w-9 rounded-full flex items-center justify-center;
+    background: #eff6ff;
+  }
+
+  .cv-preview-icon svg {
+    @apply h-[18px] w-[18px];
+  }
+
+  .cv-preview-content {
+    @apply flex-1 min-w-0;
+  }
+
+  .cv-preview-label {
+    @apply text-[8px] font-semibold uppercase tracking-[0.12em];
+    color: #6b7280;
+  }
+
+  .cv-preview-text {
+    @apply mt-0.5 text-[11px] font-medium;
+    color: #0f172a;
+  }
+
+  .cv-preview-hint {
+    @apply mt-0.5 text-[9px];
+    color: #9ca3af;
+  }
+
+  .cv-preview-art {
+    @apply flex-shrink-0 flex flex-col gap-1 py-0.5;
+  }
+
+  .cv-preview-doc-line {
+    @apply h-1 rounded-full;
+    background: #e5e7eb;
+  }
+
+  /* Bottom */
+  .cv-bottom {
+    @apply flex flex-col px-4 pb-3 pt-2;
+  }
+
+  .cv-bottom-icon {
+    @apply flex-shrink-0 h-6 w-6 rounded-full flex items-center justify-center;
+    background: #eff6ff;
+  }
+
+  .cv-bottom-icon svg {
+    @apply h-3 w-3;
+  }
+
+  .cv-bottom-text {
+    @apply text-[10px];
+    color: #6b7280;
+  }
+
+  .cv-continue-btn {
+    @apply flex items-center justify-center gap-2 w-full h-11 rounded-xl text-[13px] font-semibold transition mt-2.5;
+  }
+
+  .cv-continue-btn:not(:disabled) {
+    color: white;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.2);
+  }
+
+  .cv-continue-btn:not(:disabled):hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+  }
+
+  .cv-continue-btn:disabled {
+    color: #9ca3af;
+    background: #dbeafe;
+    cursor: not-allowed;
+  }
+
+  .cv-continue-btn svg {
+    @apply h-4 w-4;
+  }
+
+  /* ===== Job Dashboard Redesign ===== */
+
+  .job-dashboard-header {
+    @apply px-4 pt-3 pb-2;
+    background: #ffffff;
+  }
+
+  .job-step-badge {
+    @apply inline-block px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] rounded-full;
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+  }
+
+  .job-portal-header {
+    @apply flex items-center justify-between mt-3;
+  }
+
+  .job-portal-info {
+    @apply flex items-center gap-3;
+  }
+
+  .job-portal-logo {
+    @apply flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center;
+    background: #0A66C2;
+  }
+
+  .job-portal-logo svg {
+    @apply w-7 h-7;
+  }
+
+  .job-portal-title {
+    @apply text-[18px] font-semibold;
+    color: #0f172a;
+    font-family: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", sans-serif;
+  }
+
+  .job-portal-subtitle {
+    @apply text-[12px];
+    color: #6b7280;
+  }
+
+  .job-search-btn {
+    @apply inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-[13px] font-medium transition;
+    color: #374151;
+    background: #ffffff;
+    border: 1.5px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .job-search-btn:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+  }
+
+  .job-search-btn svg {
+    @apply w-4 h-4;
+  }
+
+  .job-search-btn-primary {
+    color: white;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border: none;
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25);
+  }
+
+  .job-search-btn-primary:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+  }
+
+  .job-dashboard-content {
+    @apply px-4 pb-4 flex-1 overflow-y-auto;
+    background: #ffffff;
+  }
+
+  .job-empty-state {
+    @apply rounded-2xl px-4 py-8 flex flex-col items-center justify-center;
+    background: #ffffff;
+    border: 1.5px solid #e5e7eb;
+  }
+
+  .job-empty-icon {
+    @apply w-14 h-14 rounded-full flex items-center justify-center;
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  }
+
+  .job-empty-icon .magic-spinner {
+    @apply h-5 w-5;
+    border-color: rgba(59, 130, 246, 0.2);
+    border-top-color: #3b82f6;
+  }
+
+  .job-empty-title {
+    @apply mt-4 text-[16px] font-semibold;
+    color: #0f172a;
+  }
+
+  .job-empty-text {
+    @apply mt-2 text-[12px] text-center max-w-[260px];
+    color: #6b7280;
+    line-height: 1.5;
+  }
+
+  .job-selected-card {
+    @apply rounded-2xl p-4;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  }
+
+  .job-selected-header {
+    @apply mb-3;
+  }
+
+  .job-selected-badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] rounded-full;
+    background: rgba(59, 130, 246, 0.08);
+    color: #2563eb;
+  }
+
+  .job-selected-badge svg {
+    @apply w-3.5 h-3.5;
+    color: #3b82f6;
+  }
+
+  .job-selected-body {
+    @apply flex items-start gap-4;
+  }
+
+  .job-selected-main {
+    @apply flex-1 min-w-0;
+  }
+
+  .job-company-logo {
+    @apply w-14 h-14 rounded-xl flex items-center justify-center overflow-hidden;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+  }
+
+  .job-company-logo-img {
+    @apply w-10 h-10 object-contain;
+  }
+
+  .job-selected-info {
+    @apply flex-1 min-w-0;
+  }
+
+  .job-selected-title {
+    @apply text-[16px] font-semibold leading-tight;
+    color: #0f172a;
+  }
+
+  .job-selected-meta {
+    @apply mt-2 flex items-center flex-wrap gap-1.5 text-[12px];
+    color: #6b7280;
+  }
+
+  .job-meta-dot {
+    @apply text-[#d1d5db];
+  }
+
+  .job-remote-badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px];
+    background: #f0fdf4;
+    color: #16a34a;
+  }
+
+  .job-remote-badge svg {
+    @apply w-3 h-3;
+  }
+
+  .job-fit-score {
+    @apply flex-shrink-0 w-24 h-24 relative flex items-center justify-center;
+  }
+
+  .job-fit-score-ring {
+    @apply w-full h-full;
+  }
+
+  .job-fit-score-text {
+    @apply absolute inset-0 flex flex-col items-center justify-center;
+  }
+
+  .job-fit-score-text span:first-child {
+    @apply text-[20px] font-bold;
+    color: #2563eb;
+  }
+
+  .job-fit-score-text span:last-child {
+    @apply text-[9px] font-medium;
+    color: #6b7280;
+  }
+
+  .job-tier-badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 mt-3 rounded-full text-[12px] font-medium;
+  }
+
+  .job-tier-badge-top {
+    background: #f0fdf4;
+    color: #16a34a;
+  }
+
+  .job-selected-description {
+    @apply mt-3 text-[13px] leading-relaxed;
+    color: #4b5563;
+  }
+
+  .job-ai-analysis {
+    @apply mt-4 p-3 rounded-xl;
+    background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+    border: 1px solid #bfdbfe;
+  }
+
+  .job-ai-analysis-title {
+    @apply flex items-center gap-2 text-[13px] font-semibold mb-3;
+    color: #1e40af;
+  }
+
+  .job-ai-analysis-title svg {
+    @apply w-4 h-4;
+    color: #3b82f6;
+  }
+
+  .job-ai-analysis-list {
+    @apply space-y-2;
+  }
+
+  .job-analysis-item {
+    @apply flex items-center gap-2 text-[12px];
+    color: #374151;
+  }
+
+  .job-analysis-item svg {
+    @apply w-4 h-4 flex-shrink-0;
+  }
+
+  .job-apply-btn {
+    @apply flex items-center justify-center gap-3 w-full mt-4 px-4 py-3.5 rounded-xl text-[15px] font-semibold transition;
+    color: white;
+    background: linear-gradient(135deg, #0f4c8a 0%, #1e3a5f 100%);
+    box-shadow: 0 8px 24px rgba(15, 76, 138, 0.3);
+  }
+
+  .job-apply-btn:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+  }
+
+  .job-apply-btn svg {
+    @apply w-5 h-5;
+  }
+
+  .job-apply-hint {
+    @apply mt-2 text-center text-[12px];
+    color: #6b7280;
+  }
+
+  .job-auto-mode {
+    @apply mt-4 flex items-center gap-3 p-3 rounded-xl;
+    background: linear-gradient(135deg, #faf5ff 0%, #f5f3ff 100%);
+    border: 1px solid #e9d5ff;
+  }
+
+  .job-auto-mode-icon {
+    @apply flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center;
+    background: rgba(139, 92, 246, 0.1);
+    position: relative;
+  }
+
+  .job-auto-mode-icon svg {
+    @apply w-8 h-8;
+  }
+
+  .job-auto-mode-badge {
+    @apply absolute -bottom-1 -right-1 w-4 h-4 rounded-full;
+    background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4);
+  }
+
+  .job-auto-mode-content {
+    @apply flex-1 min-w-0;
+  }
+
+  .job-auto-mode-title {
+    @apply text-[14px] font-semibold;
+    color: #4c1d95;
+  }
+
+  .job-auto-mode-text {
+    @apply text-[12px];
+    color: #6b7280;
+  }
+
+  .job-auto-mode-security {
+    @apply mt-1 inline-flex items-center gap-1 text-[11px];
+    color: #8b5cf6;
+  }
+
+  .job-auto-mode-security svg {
+    @apply w-3.5 h-3.5;
+  }
+
+  .job-auto-mode-dropdown {
+    @apply flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl cursor-pointer;
+    background: #ffffff;
+    border: 1.5px solid #e5e7eb;
+  }
+
+  .job-vacancies-count {
+    @apply text-[13px] font-semibold;
+    color: #7c3aed;
+  }
+
+  .job-auto-mode-dropdown svg {
+    @apply w-4 h-4;
+    color: #9ca3af;
+  }
+
+  .job-security-footer {
+    @apply mt-4 flex items-center justify-center gap-2 text-[11px];
+    color: #6b7280;
+  }
+
+  .job-security-footer svg {
+    @apply w-4 h-4;
+  }
+
+  .job-back-btn {
+    @apply flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-[13px] font-medium transition;
+    color: #6b7280;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+  }
+
+  .job-back-btn:hover {
+    background: #f3f4f6;
+  }
+
+  .job-back-btn svg {
+    @apply w-4 h-4;
+  }
+}

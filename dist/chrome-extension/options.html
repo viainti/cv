@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ajustes - CV Apply</title>
+    <link rel="stylesheet" href="./styles/output.css" />
+    <style>
+      body {
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at top left, rgba(129, 243, 229, 0.18), transparent 28%),
+          radial-gradient(circle at top right, rgba(28, 93, 128, 0.12), transparent 34%),
+          linear-gradient(180deg, #f3faff 0%, #eaf5fb 100%);
+      }
+    </style>
+  </head>
+  <body class="font-sans">
+    <main class="mx-auto max-w-3xl p-6 md:p-10">
+      <div class="glass-card p-6 md:p-8">
+        <div class="flex items-start justify-between">
+          <div>
+            <p class="label-ui text-xs font-semibold uppercase tracking-[0.24em]">Configuración</p>
+            <h1 class="title-display mt-2 text-2xl font-semibold text-[#071e27]">CV Apply</h1>
+          </div>
+          <span class="pulse-badge">System</span>
+        </div>
+        <p class="label-ui mt-2 max-w-2xl text-sm">
+          La extensión ya trae una clave por defecto. Aquí puedes revisar el modelo y personalizar cómo quieres que se adapten las postulaciones.
+        </p>
+
+        <div class="mt-6 grid gap-4">
+          <div class="module-card">
+            <label for="apiKey" class="label-ui mb-2 block text-xs font-medium uppercase tracking-wide">OpenRouter API Key</label>
+            <input id="apiKey" type="password" class="input-ui" placeholder="sk-or-v1-..." />
+          </div>
+
+          <div class="module-card">
+            <label for="model" class="label-ui mb-2 block text-xs font-medium uppercase tracking-wide">Modelo</label>
+            <input id="model" class="input-ui" value="openai/gpt-4o-mini" />
+          </div>
+
+          <div class="module-card">
+            <label for="extraPrompt" class="label-ui mb-2 block text-xs font-medium uppercase tracking-wide">Instrucciones extra</label>
+            <textarea id="extraPrompt" class="input-ui h-28 resize-none" placeholder="Ej: prioriza vacantes frontend remotas y adapta respuestas al tono de la oferta"></textarea>
+          </div>
+
+          <button id="saveSettings" class="btn-primary w-fit">Guardar ajustes</button>
+          <p id="status" class="label-ui text-xs"></p>
+        </div>
+      </div>
+    </main>
+
+    <script src="options.js" type="module"></script>
+  </body>
+</html>

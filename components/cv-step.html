@@ -1,0 +1,94 @@
+        <div id="cvStep" class="hidden min-h-0 flex flex-1 flex-col">
+          <textarea id="cvText" class="hidden"></textarea>
+          <input id="cvFile" type="file" class="hidden" accept=".pdf,.docx,.txt,.md" />
+          <div class="cv-upload-shell flex flex-1 flex-col justify-between">
+            <div>
+              <!-- Progress bar -->
+              <div class="cv-progress-header px-5 pt-4">
+                <p class="cv-progress-label">PASO 1 DE 3</p>
+                <div class="cv-progress-track mt-2">
+                  <div class="cv-progress-bar cv-progress-bar-active"></div>
+                  <div class="cv-progress-bar"></div>
+                  <div class="cv-progress-bar"></div>
+                </div>
+              </div>
+
+              <!-- Title -->
+              <div class="cv-title-section px-5 pt-4">
+                <h2 class="cv-title">Sube tu CV</h2>
+                <p class="cv-subtitle">Guardado local + extracción automática.</p>
+              </div>
+
+              <!-- Upload card -->
+              <div class="cv-upload-card mx-5 mt-4">
+                <div class="cv-upload-header">
+                  <div class="cv-upload-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                      <path d="M14 2v6h6"/>
+                      <path d="M8 13h8"/><path d="M8 17h8"/><path d="M10 9H8"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="cv-upload-title">Selecciona tu CV</h3>
+                    <p class="cv-upload-formats">Formatos soportados: PDF, DOCX, TXT, MD</p>
+                  </div>
+                </div>
+
+                <!-- Drop zone -->
+                <div id="cvDropZone" class="cv-drop-zone">
+                  <svg class="cv-drop-icon" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 15l-6-6-6 6"/>
+                    <path d="M12 9v12"/>
+                    <path d="M3 17a4 4 0 0 0 4 4h10a4 4 0 0 0 4-4"/>
+                  </svg>
+                  <p class="cv-drop-text">Arrastra tu archivo aquí</p>
+                  <p class="cv-drop-subtext">o selecciona desde tu dispositivo</p>
+                </div>
+
+                <button id="extractCv" class="cv-upload-btn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <path d="M17 8l-5-5-5 5"/>
+                    <path d="M12 3v12"/>
+                  </svg>
+                  <span>Subir CV</span>
+                </button>
+                <p class="cv-upload-hint">PDF, DOCX, TXT, MD (máx. 10MB)</p>
+
+                <!-- Upload progress -->
+                <div id="cvUploadProgress" class="hidden mt-4">
+                  <div class="cv-upload-progress-card">
+                    <div id="cvUploadSpinner" class="cv-upload-spinner" aria-hidden="true"></div>
+                    <div class="cv-upload-progress-content">
+                      <p id="cvUploadStatusLabel" class="cv-upload-progress-label">Procesando CV...</p>
+                      <p id="cvUploadStatusHint" class="cv-upload-progress-hint">Esto tomará unos segundos.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <p id="cvFileName" class="cv-file-name hidden"></p>
+              </div>
+            </div>
+
+            <!-- Bottom -->
+            <div class="cv-bottom px-5 pb-3">
+              <div class="flex items-center gap-2 mb-3">
+                <div class="cv-bottom-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                </div>
+                <p id="cvSavedAt" class="cv-bottom-text">Nada guardado todavía.</p>
+              </div>
+              <button id="continueBtn" class="cv-continue-btn cv-continue-btn-disabled" disabled>
+                <span>Continuar</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+

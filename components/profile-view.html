@@ -1,0 +1,165 @@
+        <div id="profileView" class="hidden h-full min-h-0 flex-1 flex-col overflow-hidden">
+          <div class="module-card account-view-shell flex h-full min-h-0 flex-1 flex-col">
+            <div class="account-view-scroll flex-1 overflow-y-auto">
+              <div class="flex items-center justify-between gap-3 mb-3">
+                <p class="label-ui text-xs font-medium uppercase tracking-[0.22em]">Mi Perfil</p>
+                <button id="closeProfileBtn" class="btn-ghost text-xs">✕</button>
+              </div>
+              
+              <!-- Profile Tabs -->
+              <div class="profile-tabs flex gap-1 mb-4 p-1 rounded-xl bg-[#f0f5f8]">
+                <button type="button" data-profile-tab="resumen" class="profile-tab-btn flex-1 py-2 px-3 text-[11px] font-semibold rounded-lg transition-all bg-[#0f5d86] text-white">
+                  📋 Resumen
+                </button>
+                <button type="button" data-profile-tab="editar" class="profile-tab-btn flex-1 py-2 px-3 text-[11px] font-semibold rounded-lg transition-all text-[#4d6570] hover:text-[#071e27]">
+                  ✏️ Editar
+                </button>
+                <button type="button" data-profile-tab="actividad" class="profile-tab-btn flex-1 py-2 px-3 text-[11px] font-semibold rounded-lg transition-all text-[#4d6570] hover:text-[#071e27]">
+                  📊 Actividad
+                </button>
+              </div>
+
+              <!-- Resumen Tab Content -->
+              <div id="profileResumenTab" class="profile-tab-content">
+                <!-- Profile Stats -->
+                <div class="paper-card p-3 mb-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-3">Resumen del perfil</p>
+                  <div id="profileStats" class="grid grid-cols-3 gap-2">
+                    <div class="rounded-xl bg-[#f4f9fc] px-3 py-2 text-center">
+                      <p class="title-display text-[16px] font-semibold text-[#071e27]">0</p>
+                      <p class="text-[11px] text-[#4d6570]">CVs</p>
+                    </div>
+                    <div class="rounded-xl bg-[#f4f9fc] px-3 py-2 text-center">
+                      <p class="title-display text-[16px] font-semibold text-[#071e27]">0</p>
+                      <p class="text-[11px] text-[#4d6570]">Postulaciones</p>
+                    </div>
+                    <div class="rounded-xl bg-[#f4f9fc] px-3 py-2 text-center">
+                      <p class="title-display text-[16px] font-semibold text-[#071e27]">0</p>
+                      <p class="text-[11px] text-[#4d6570]">Búsquedas</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- CV Details -->
+                <div class="paper-card p-3 mb-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-3">Datos extraídos del CV</p>
+                  <div id="profileCvDetails">
+                    <p class="text-sm text-[#4d6570] text-center py-2">Sube un CV para ver todos los campos extraídos aquí.</p>
+                  </div>
+                </div>
+
+                <!-- Plan Card -->
+                <div class="paper-card p-3">
+                  <div id="planCard" class="plan-card">
+                    <div class="flex items-start justify-between gap-3">
+                      <div>
+                        <span id="planStatusBadge" class="plan-badge">Trial activo</span>
+                        <p class="title-display mt-3 text-[16px] font-semibold text-[#071e27]">Plan actual: <span id="planCurrentName">Freemium</span></p>
+                        <p id="planStatusCopy" class="mt-2 text-[12px] leading-5 text-[#4d6570]">Todo usuario nuevo entra en trial Freemium.</p>
+                      </div>
+                      <div class="rounded-2xl bg-[#0f5d86] px-3 py-2 text-right text-white">
+                        <p id="planRemaining" class="title-display text-[18px] font-semibold">10</p>
+                        <p class="text-[10px] uppercase tracking-[0.18em] text-white/75">restantes</p>
+                      </div>
+                    </div>
+                    <div class="mt-4">
+                      <div class="flex items-center justify-between gap-2 text-[11px] text-[#4d6570]">
+                        <span id="planUsageTitle">Uso de este mes</span>
+                        <span id="planUsageLabel">0 / 10 usadas este mes</span>
+                      </div>
+                      <div class="plan-progress mt-2">
+                        <div id="planProgressBar" class="plan-progress-bar" style="width: 0%"></div>
+                      </div>
+                    </div>
+                    <button id="openPricingBtn" class="btn-primary mt-4 w-full py-2 text-[14px]">Ver planes y pagar</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Editar Tab Content -->
+              <div id="profileEditarTab" class="profile-tab-content hidden">
+                <div class="paper-card p-3">
+                  <div class="space-y-3">
+                    <div>
+                      <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Nombre completo</label>
+                      <input id="profileName" type="text" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1" placeholder="Tu nombre" />
+                    </div>
+                    <div>
+                      <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Email</label>
+                      <input id="profileEmail" type="email" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1" disabled />
+                    </div>
+                    <div>
+                      <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Teléfono</label>
+                      <input id="profilePhone" type="tel" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1" placeholder="+41 XX XXX XXXX" />
+                    </div>
+                    <div>
+                      <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Ubicación completa</label>
+                      <input id="profileLocation" type="text" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1" placeholder="Zurich, Switzerland" />
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                      <div>
+                        <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Ciudad</label>
+                        <input id="profileCity" type="text" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1" placeholder="Zurich" />
+                      </div>
+                      <div>
+                        <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Cantón/Provincia</label>
+                        <input id="profileState" type="text" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1" placeholder="Zurich" />
+                      </div>
+                    </div>
+                    <div>
+                      <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">País</label>
+                      <input id="profileCountry" type="text" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1" placeholder="Switzerland" />
+                    </div>
+                    <div>
+                      <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Rol objetivo</label>
+                      <input id="profileRole" type="text" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1" placeholder="Software Engineer" />
+                    </div>
+                    <div>
+                      <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Skills (separadas por coma)</label>
+                      <input id="profileSkills" type="text" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1" placeholder="React, TypeScript, Node.js" />
+                    </div>
+                    <div>
+                      <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Seniority</label>
+                      <select id="profileSeniority" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1">
+                        <option value="">Seleccionar</option>
+                        <option value="junior">Junior</option>
+                        <option value="mid">Mid</option>
+                        <option value="senior">Senior</option>
+                        <option value="lead">Lead</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Preferencia remoto</label>
+                      <select id="profileRemote" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1">
+                        <option value="">Seleccionar</option>
+                        <option value="remote">Remoto</option>
+                        <option value="hybrid">Híbrido</option>
+                        <option value="onsite">Presencial</option>
+                      </select>
+                    </div>
+                  </div>
+                  <button id="saveProfileBtn" class="btn-primary w-full mt-4 py-2 text-[14px]">💾 Guardar perfil</button>
+                </div>
+              </div>
+
+              <!-- Actividad Tab Content -->
+              <div id="profileActividadTab" class="profile-tab-content hidden">
+                <!-- Activity History -->
+                <div class="paper-card p-3 mb-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-3">Historial de actividad</p>
+                  <div id="profileActivityList" class="space-y-2">
+                    <p class="text-sm text-[#4d6570] text-center py-2">Sin actividad reciente.</p>
+                  </div>
+                </div>
+
+                <!-- CVs History -->
+                <div class="paper-card p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-3">CVs subidos</p>
+                  <div id="profileCvsList" class="space-y-2">
+                    <p class="text-sm text-[#4d6570] text-center py-2">Sin CVs subidos.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>

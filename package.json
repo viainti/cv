@@ -1,0 +1,37 @@
+{
+  "name": "cv-apply-nextjs",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Next.js UI for CV Apply Chrome extension",
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001",
+    "build:css": "tailwindcss -i ./styles/input.css -o ./styles/output.css --minify",
+    "build:popup": "node scripts/build-popup.js",
+    "build:local": "sh ./scripts/build-local.sh",
+    "build:extension": "sh ./scripts/build-chrome-extension.sh",
+    "build:deploy": "sh ./scripts/build-and-deploy.sh",
+    "build:all": "sh ./scripts/build-local.sh",
+    "build:chrome": "npm run build:css && npm run build:extension",
+    "playwright:install": "npx playwright install chromium"
+  },
+  "dependencies": {
+    "jszip": "^3.10.1",
+    "mammoth": "^1.12.0",
+    "next": "14.2.33",
+    "pdfjs-dist": "^5.6.205",
+    "playwright": "^1.59.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.8.7",
+    "@types/react": "^18.3.12",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.6.3"
+  }
+}

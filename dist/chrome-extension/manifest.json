@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "CV Apply Autofill",
+  "description": "Importa tu CV y completa formularios de empleo con OpenRouter.",
+  "version": "1.0.0",
+  "permissions": ["storage", "activeTab", "scripting", "tabs"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "CV Apply",
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["firebase-app.js", "firebase-auth.js", "firebase-firestore.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

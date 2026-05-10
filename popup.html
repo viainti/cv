@@ -1,0 +1,2358 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TRCVASTIAN</title>
+    <link rel="stylesheet" href="./styles/output.css" />
+    <style>
+      body {
+        font-family: "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+        width: 400px;
+        height: 600px;
+        background:
+          radial-gradient(circle at top left, rgba(129, 243, 229, 0.18), transparent 28%),
+          radial-gradient(circle at top right, rgba(28, 93, 128, 0.12), transparent 34%),
+          linear-gradient(180deg, #f3faff 0%, #eaf5fb 100%);
+        overflow: hidden;
+      }
+
+      body.results-scroll-mode,
+      body.cv-improve-scroll-mode {
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(28, 93, 128, 0.42) rgba(255, 255, 255, 0.65);
+      }
+
+      body.results-scroll-mode main,
+      body.cv-improve-scroll-mode main {
+        min-height: 100%;
+        height: auto;
+        overflow: visible;
+      }
+
+      body.cv-improve-scroll-mode main {
+        max-height: none;
+      }
+
+      body.results-scroll-mode section,
+      body.cv-improve-scroll-mode section {
+        overflow: visible;
+      }
+
+      body.cv-improve-scroll-mode section {
+        min-height: auto;
+        height: auto;
+      }
+
+      body.cv-improve-scroll-mode #jobStep {
+        min-height: auto;
+        height: auto;
+      }
+
+      #jobActionStep.improve-scroll-active {
+        justify-content: flex-start;
+        gap: 10px;
+        min-height: 0;
+        height: auto;
+        overflow: visible;
+      }
+
+      #jobActionStep.improve-scroll-active > div {
+        min-height: 0;
+        overflow: visible;
+        padding-right: 0;
+      }
+
+      #jobActionStep.improve-scroll-active #cvImprovePanel {
+        max-height: none;
+        overflow: visible;
+      }
+
+      #jobsList,
+      #trackerList,
+      #historyList,
+      #trackerTab,
+      #profileTab {
+        scrollbar-width: none;
+      }
+
+      #jobsList::-webkit-scrollbar,
+      #trackerList::-webkit-scrollbar,
+      #historyList::-webkit-scrollbar,
+      #trackerTab::-webkit-scrollbar,
+      #profileTab::-webkit-scrollbar {
+        display: none;
+      }
+
+      body.results-scroll-mode::-webkit-scrollbar,
+      body.cv-improve-scroll-mode::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      body.results-scroll-mode::-webkit-scrollbar-track,
+      body.cv-improve-scroll-mode::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.68);
+        border-radius: 999px;
+      }
+
+      body.results-scroll-mode::-webkit-scrollbar-thumb,
+      body.cv-improve-scroll-mode::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, rgba(0, 69, 100, 0.72) 0%, rgba(28, 93, 128, 0.5) 100%);
+        border-radius: 999px;
+        border: 2px solid rgba(255, 255, 255, 0.68);
+      }
+
+      body.results-scroll-mode::-webkit-scrollbar-thumb:hover,
+      body.cv-improve-scroll-mode::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, rgba(0, 69, 100, 0.82) 0%, rgba(28, 93, 128, 0.62) 100%);
+      }
+      .account-view-shell {
+        min-height: 0;
+        overflow: hidden;
+      }
+      .account-view-scroll {
+        min-height: 0;
+        flex: 1 1 auto;
+        overflow-y: auto;
+        padding-right: 4px;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(28, 93, 128, 0.28) transparent;
+      }
+      .account-view-scroll::-webkit-scrollbar {
+        width: 8px;
+      }
+      .account-view-scroll::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .account-view-scroll::-webkit-scrollbar-thumb {
+        background: rgba(28, 93, 128, 0.22);
+        border-radius: 999px;
+      }
+      .account-view-footer {
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(193, 199, 209, 0.22);
+        background: linear-gradient(180deg, rgba(234, 245, 251, 0) 0%, rgba(234, 245, 251, 0.92) 26%, rgba(234, 245, 251, 1) 100%);
+      }
+       .menu-btn { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 0; border-radius: 12px; background: #f4f9fc; color: #071e27; font: 500 14px/1 Inter, system-ui, sans-serif; cursor: pointer; transition: background .15s ease, transform .15s ease; text-align: left; }
+       .menu-btn:hover { background: #eef5fa; transform: translateY(-1px); }
+       .menu-icon { font-size: 18px; }
+       .selected-check { box-shadow: 0 1px 3px rgba(34, 197, 94, 0.3); transition: transform .2s ease; }
+       .job-inline-btn { transition: all .15s ease; }
+       .job-inline-btn:hover { transform: translateY(-1px); }
+       .brand-icon { filter: drop-shadow(0 1px 2px rgba(0,0,0,0.12)); }
+     </style>
+  </head>
+  <body class="overflow-hidden font-sans">
+
+    <div id="bootLoader" class="fixed inset-0 z-[999] flex items-center justify-center bg-[linear-gradient(180deg,#f3faff_0%,#eaf5fb_100%)]">
+      <div class="flex flex-col items-center justify-center gap-3 rounded-[24px] bg-white/92 px-8 py-8 shadow-[0_20px_60px_rgba(15,93,134,0.16)]">
+        <div class="h-8 w-8 rounded-full border-2 border-[#1c5d80] border-t-transparent animate-spin"></div>
+        <p id="bootLoaderLabel" class="label-ui text-sm font-medium text-[#1c5d80]">Conectando...</p>
+      </div>
+    </div>
+
+    <main class="flex h-full flex-col overflow-hidden">
+       <header id="appHeader" class="hidden px-4 py-2" style="background: #ffffff; border-bottom: 1px solid #e5e7eb;">
+         <div class="flex items-center justify-between">
+           <div class="flex items-center gap-2">
+             <button id="userMenuBtn" class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-gray-50 transition">
+               <div class="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold" id="headerUserInitial">U</div>
+               <span class="text-[12px] font-semibold text-gray-800" id="headerUserName">Usuario</span>
+             </button>
+           </div>
+           <div class="flex items-center gap-2">
+             <span id="languageFlag" class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-gray-100 text-[11px] font-medium text-gray-600"> ES</span>
+             <button id="cvAction" class="hidden">Upload CV</button>
+           </div>
+         </div>
+         <h1 id="status" class="hidden text-[11px] text-blue-500 mt-1">Sube tu CV primero.</h1>
+       </header>
+
+        <div id="introStep" class="hidden flex h-full min-h-0 flex-col justify-between gap-3">
+          <!-- Auth Section -->
+          <div id="authSection" class="overflow-hidden">
+            <div class="auth-shell">
+              <!-- Header con logo -->
+              <div class="auth-header">
+                <svg class="auth-logo-icon" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2L2 20h20L12 2z" fill="#3b82f6"/>
+                  <path d="M12 8l-5 10h10L12 8z" fill="#60a5fa"/>
+                </svg>
+                <span class="auth-logo-text">TRCVASTIAN</span>
+              </div>
+
+              <!-- Hero: título + ilustración -->
+              <div class="auth-hero">
+                <div class="auth-hero-copy">
+                  <h2 class="auth-hero-title">Inicia sesión o <span class="auth-hero-title-accent">regístrate</span></h2>
+                  <p class="auth-hero-text">Accede para subir, analizar y mejorar tu CV con IA.</p>
+                </div>
+                <div class="auth-hero-art" aria-hidden="true">
+                  <!-- Ilustración de documento con flecha de subida -->
+                  <div class="auth-art-document">
+                    <div class="auth-art-doc-lines">
+                      <div class="auth-art-doc-line w-3/4"></div>
+                      <div class="auth-art-doc-line w-1/2"></div>
+                      <div class="auth-art-doc-line w-2/3"></div>
+                    </div>
+                    <div class="auth-art-upload-btn">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 19V5"/>
+                        <path d="m5 12 7-7 7 7"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="auth-art-sparkle auth-art-sparkle-1"></div>
+                  <div class="auth-art-sparkle auth-art-sparkle-2"></div>
+                  <div class="auth-art-sparkle auth-art-sparkle-3"></div>
+                </div>
+              </div>
+
+              <!-- Divider con label -->
+              <div class="auth-divider-section">
+                <span class="auth-divider-line"></span>
+                <span class="auth-divider-label">INICIAR SESIÓN</span>
+                <span class="auth-divider-line"></span>
+              </div>
+
+              <!-- Login Form -->
+              <div id="loginForm" class="auth-panel">
+                <label class="auth-field">
+                  <span class="auth-field-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="2" y="4" width="20" height="16" rx="2"/>
+                      <path d="m22 4-10 8L2 4"/>
+                    </svg>
+                  </span>
+                  <input id="loginEmail" type="email" placeholder="Email" class="auth-input" />
+                </label>
+                <label class="auth-field">
+                  <span class="auth-field-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="11" width="18" height="11" rx="2"/>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                  </span>
+                  <input id="loginPassword" type="password" placeholder="Contraseña" class="auth-input auth-input-password" />
+                  <button type="button" id="loginPasswordToggle" class="auth-field-action" aria-label="Mostrar contraseña">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"/>
+                      <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                  </button>
+                </label>
+                <div class="auth-row">
+                  <label class="auth-check">
+                    <input id="rememberMe" type="checkbox" />
+                    <span>Recordarme</span>
+                  </label>
+                  <button type="button" id="forgotPasswordBtn" class="auth-link">¿Olvidaste tu contraseña?</button>
+                </div>
+                <button type="button" id="loginBtn" class="auth-submit-btn">
+                  <span>Entrar</span>
+                  <svg class="auth-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"/>
+                    <path d="m12 5 7 7-7 7"/>
+                  </svg>
+                </button>
+                <p class="auth-inline-switch">¿No tienes cuenta? <button type="button" id="showRegisterBtn" class="auth-inline-link">Regístrate</button></p>
+              </div>
+
+              <!-- Register Form -->
+              <div id="registerForm" class="auth-panel hidden">
+                <div class="auth-divider-section">
+                  <span class="auth-divider-line"></span>
+                  <span class="auth-divider-label">CREAR CUENTA</span>
+                  <span class="auth-divider-line"></span>
+                </div>
+                <label class="auth-field">
+                  <span class="auth-field-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                      <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                  </span>
+                  <input id="registerName" type="text" placeholder="Nombre completo" class="auth-input" />
+                </label>
+                <label class="auth-field">
+                  <span class="auth-field-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="2" y="4" width="20" height="16" rx="2"/>
+                      <path d="m22 4-10 8L2 4"/>
+                    </svg>
+                  </span>
+                  <input id="registerEmail" type="email" placeholder="Email" class="auth-input" />
+                </label>
+                <label class="auth-field">
+                  <span class="auth-field-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="11" width="18" height="11" rx="2"/>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                  </span>
+                  <input id="registerPassword" type="password" placeholder="Contraseña" class="auth-input auth-input-password" />
+                  <button type="button" id="registerPasswordToggle" class="auth-field-action" aria-label="Mostrar contraseña">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"/>
+                      <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                  </button>
+                </label>
+                <button type="button" id="registerBtn" class="auth-submit-btn">
+                  <span>Crear cuenta</span>
+                  <svg class="auth-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"/>
+                    <path d="m12 5 7 7-7 7"/>
+                  </svg>
+                </button>
+                <p class="auth-inline-switch">¿Ya tienes cuenta? <button type="button" id="showLoginBtn" class="auth-inline-link">Inicia sesión</button></p>
+              </div>
+
+              <!-- User logged in (hidden by default) -->
+              <div id="userPanel" class="mt-4 hidden">
+                <div class="paper-card p-3 text-center">
+                  <div class="w-12 h-12 rounded-full bg-[#0f5d86] text-white flex items-center justify-center mx-auto text-lg font-bold" id="userInitial">U</div>
+                  <p id="userName" class="title-display mt-2 text-[15px] font-semibold text-[#071e27]">Usuario</p>
+                  <p id="userEmail" class="text-xs text-[#4d6570]">email@example.com</p>
+                  <button type="button" id="logoutBtn" class="btn-secondary w-full mt-3 py-2 text-[14px]">Cerrar sesión</button>
+                </div>
+              </div>
+              <p id="authError" class="auth-error hidden"></p>
+            </div>
+          </div>
+
+
+          <!-- Carousel (show after login) -->
+          <div id="carouselSection" class="overflow-hidden hidden flex-1 flex flex-col">
+            <div class="intro-shell-new flex-1 flex flex-col justify-between">
+              <!-- Top: Welcome + Name -->
+              <div class="intro-welcome px-5 pt-4">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="intro-welcome-bar"></span>
+                  <span class="intro-welcome-label">BIENVENIDO</span>
+                </div>
+                <h2 class="intro-welcome-name" id="welcomeUserName">edinson</h2>
+              </div>
+
+              <!-- Center: Step card -->
+              <div class="intro-center px-5">
+                <div class="intro-step-card">
+                  <div class="intro-step-row">
+                    <div class="intro-step-badge">01</div>
+                    <div class="intro-step-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <path d="M14 2v6h6"/>
+                        <circle cx="16" cy="16" r="3" fill="#3b82f6" opacity="0.2"/>
+                        <path d="M16 18v-4"/>
+                        <path d="m14.5 15.5 1.5-1.5 1.5 1.5"/>
+                      </svg>
+                    </div>
+                    <div class="intro-step-copy">
+                      <h3 class="intro-step-title">Sube tu CV una sola vez</h3>
+                      <p class="intro-step-text">Extraemos experiencia y preferencias para personalizar tu CV.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Features carousel -->
+              <div class="intro-features px-5">
+                <div class="intro-feature-item">
+                  <div class="intro-feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="8"/>
+                      <path d="M12 6v2"/><path d="M12 16v2"/><path d="M6 12h2"/><path d="M16 12h2"/>
+                      <circle cx="12" cy="12" r="2" fill="#3b82f6"/>
+                    </svg>
+                  </div>
+                  <div class="intro-feature-copy">
+                    <p class="intro-feature-title">Personalizado</p>
+                    <p class="intro-feature-sub">Hecho a tu medida</p>
+                  </div>
+                </div>
+                <div class="intro-feature-item">
+                  <div class="intro-feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                  </div>
+                  <div class="intro-feature-copy">
+                    <p class="intro-feature-title">Rápido</p>
+                    <p class="intro-feature-sub">Ahorra tiempo</p>
+                  </div>
+                </div>
+                <div class="intro-feature-item">
+                  <div class="intro-feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                      <path d="m9 12 2 2 4-4"/>
+                    </svg>
+                  </div>
+                  <div class="intro-feature-copy">
+                    <p class="intro-feature-title">Seguro</p>
+                    <p class="intro-feature-sub">Tus datos protegidos</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div class="intro-actions px-5 pb-3">
+                <button id="skipIntroBtn" class="intro-btn-skip">
+                  <span>Omitir</span>
+                  <svg class="intro-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                  </svg>
+                </button>
+                <button id="startIntroBtn" class="intro-btn-start">
+                  <span>Comenzar</span>
+                  <svg class="intro-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Trust -->
+              <div class="intro-trust pb-4">
+                <div class="intro-trust-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                </div>
+                <p class="intro-trust-text">Tus datos están seguros con nosotros</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div id="cvStep" class="hidden min-h-0 flex flex-1 flex-col">
+          <textarea id="cvText" class="hidden"></textarea>
+          <input id="cvFile" type="file" class="hidden" accept=".pdf,.docx,.txt,.md" />
+          <div class="cv-upload-shell flex flex-1 flex-col justify-between">
+            <div>
+              <!-- Progress bar -->
+              <div class="cv-progress-header px-5 pt-4">
+                <p class="cv-progress-label">PASO 1 DE 3</p>
+                <div class="cv-progress-track mt-2">
+                  <div class="cv-progress-bar cv-progress-bar-active"></div>
+                  <div class="cv-progress-bar"></div>
+                  <div class="cv-progress-bar"></div>
+                </div>
+              </div>
+
+              <!-- Title -->
+              <div class="cv-title-section px-5 pt-4">
+                <h2 class="cv-title">Sube tu CV</h2>
+                <p class="cv-subtitle">Guardado local + extracción automática.</p>
+              </div>
+
+              <!-- Upload card -->
+              <div class="cv-upload-card mx-5 mt-4">
+                <div class="cv-upload-header">
+                  <div class="cv-upload-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                      <path d="M14 2v6h6"/>
+                      <path d="M8 13h8"/><path d="M8 17h8"/><path d="M10 9H8"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="cv-upload-title">Selecciona tu CV</h3>
+                    <p class="cv-upload-formats">Formatos soportados: PDF, DOCX, TXT, MD</p>
+                  </div>
+                </div>
+
+                <!-- Drop zone -->
+                <div id="cvDropZone" class="cv-drop-zone">
+                  <svg class="cv-drop-icon" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 15l-6-6-6 6"/>
+                    <path d="M12 9v12"/>
+                    <path d="M3 17a4 4 0 0 0 4 4h10a4 4 0 0 0 4-4"/>
+                  </svg>
+                  <p class="cv-drop-text">Arrastra tu archivo aquí</p>
+                  <p class="cv-drop-subtext">o selecciona desde tu dispositivo</p>
+                </div>
+
+                <button id="extractCv" class="cv-upload-btn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <path d="M17 8l-5-5-5 5"/>
+                    <path d="M12 3v12"/>
+                  </svg>
+                  <span>Subir CV</span>
+                </button>
+                <p class="cv-upload-hint">PDF, DOCX, TXT, MD (máx. 10MB)</p>
+
+                <!-- Upload progress -->
+                <div id="cvUploadProgress" class="hidden mt-4">
+                  <div class="cv-upload-progress-card">
+                    <div id="cvUploadSpinner" class="cv-upload-spinner" aria-hidden="true"></div>
+                    <div class="cv-upload-progress-content">
+                      <p id="cvUploadStatusLabel" class="cv-upload-progress-label">Procesando CV...</p>
+                      <p id="cvUploadStatusHint" class="cv-upload-progress-hint">Esto tomará unos segundos.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <p id="cvFileName" class="cv-file-name hidden"></p>
+              </div>
+            </div>
+
+            <!-- Bottom -->
+            <div class="cv-bottom px-5 pb-3">
+              <div class="flex items-center gap-2 mb-3">
+                <div class="cv-bottom-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                </div>
+                <p id="cvSavedAt" class="cv-bottom-text">Nada guardado todavía.</p>
+              </div>
+              <button id="continueBtn" class="cv-continue-btn cv-continue-btn-disabled" disabled>
+                <span>Continuar</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+        <div id="jobStep" class="hidden min-h-0 flex-1 flex-col">
+          <div id="jobActionStep" class="module-card flex flex-1 flex-col justify-between">
+            <div class="source-stage">
+              <div class="source-scroll-area">
+                <div class="flex items-center gap-2 mb-2 px-5 pt-4">
+                  <button id="backToCvBtnTop" class="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-medium text-[#4d6570] hover:text-[#071e27] hover:bg-[#f4f9fc] transition">
+                    <span>←</span>
+                    <span>Paso 1</span>
+                  </button>
+                  <span class="source-step-badge">Paso 2 de 3</span>
+                </div>
+                <h2 class="source-hero-title">¿Dónde quieres encontrar candidatos?</h2>
+                <p class="source-hero-copy">Conecta múltiples fuentes o comienza con la principal recomendada.</p>
+
+                <p class="source-section-label">
+                  <span aria-hidden="true">✦</span>
+                  <span>Fuente recomendada</span>
+                </p>
+
+                <div id="jobActionButtons" class="mt-1">
+                  <div id="sourceSelector">
+                    <button type="button" data-portal-source="linkedin" class="source-card source-primary-card source-card-active">
+                    <span class="flex min-w-0 items-center gap-3">
+                      <img src="https://www.google.com/s2/favicons?domain=linkedin.com&sz=64" alt="LinkedIn favicon" class="source-favicon-img" />
+                      <span class="source-card-copy">
+                        <span class="source-primary-title">LinkedIn</span>
+                        <span class="source-primary-meta">Principal</span>
+                        <span class="source-pill">Recomendado</span>
+                      </span>
+                    </span>
+                    <span class="source-primary-check" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4">
+                        <path d="m5 12 4.2 4.2L19 6.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path>
+                      </svg>
+                    </span>
+                  </button>
+
+                    <p class="source-section-label source-section-label-muted">
+                      <span aria-hidden="true">🌐</span>
+                      <span>Otras fuentes (desactivadas)</span>
+                    </p>
+
+                    <div class="source-disabled-grid">
+                      <button type="button" data-portal-source="indeed" class="source-card">
+                      <span class="flex min-w-0 items-center gap-3">
+                        <img src="https://www.google.com/s2/favicons?domain=indeed.com&sz=64" alt="Indeed favicon" class="source-favicon-img" />
+                        <span class="source-card-copy">
+                          <span class="source-card-title">Indeed</span>
+                          <span class="source-card-meta">Global</span>
+                        </span>
+                      </span>
+                      <span class="source-lock" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4">
+                          <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.8"></rect>
+                          <path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                        </svg>
+                      </span>
+                    </button>
+                    <button type="button" data-portal-source="computrabajo" class="source-card">
+                      <span class="flex min-w-0 items-center gap-3">
+                        <img src="https://www.google.com/s2/favicons?domain=computrabajo.com&sz=64" alt="Computrabajo favicon" class="source-favicon-img" />
+                        <span class="source-card-copy">
+                          <span class="source-card-title">Computrabajo</span>
+                          <span class="source-card-meta">Latam</span>
+                        </span>
+                      </span>
+                      <span class="source-lock" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4">
+                          <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.8"></rect>
+                          <path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                        </svg>
+                      </span>
+                    </button>
+                    <button type="button" data-portal-source="bumeran" class="source-card">
+                      <span class="flex min-w-0 items-center gap-3">
+                        <img src="https://www.google.com/s2/favicons?domain=bumeran.com&sz=64" alt="Bumeran favicon" class="source-favicon-img" />
+                        <span class="source-card-copy">
+                          <span class="source-card-title">Bumeran</span>
+                          <span class="source-card-meta">Latam</span>
+                        </span>
+                      </span>
+                      <span class="source-lock" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4">
+                          <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.8"></rect>
+                          <path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                        </svg>
+                      </span>
+                    </button>
+                    <button type="button" data-portal-source="laborum" class="source-card">
+                      <span class="flex min-w-0 items-center gap-3">
+                        <img src="https://www.google.com/s2/favicons?domain=laborum.com.pe&sz=64" alt="Laborum favicon" class="source-favicon-img" />
+                        <span class="source-card-copy">
+                          <span class="source-card-title">Laborum</span>
+                          <span class="source-card-meta">Latam</span>
+                        </span>
+                      </span>
+                      <span class="source-lock" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4">
+                          <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.8"></rect>
+                          <path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                        </svg>
+                      </span>
+                    </button>
+                    <button type="button" data-portal-source="getonboard" class="source-card">
+                      <span class="flex min-w-0 items-center gap-3">
+                        <img src="https://www.google.com/s2/favicons?domain=getonboard.com&sz=64" alt="Get on Board favicon" class="source-favicon-img" />
+                        <span class="source-card-copy">
+                          <span class="source-card-title">Get on Board</span>
+                          <span class="source-card-meta">Latam</span>
+                        </span>
+                      </span>
+                      <span class="source-lock" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4">
+                          <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.8"></rect>
+                          <path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                        </svg>
+                      </span>
+                    </button>
+                    <button type="button" data-portal-source="glassdoor" class="source-card">
+                      <span class="flex min-w-0 items-center gap-3">
+                        <img src="https://www.google.com/s2/favicons?domain=glassdoor.com&sz=64" alt="Glassdoor favicon" class="source-favicon-img" />
+                        <span class="source-card-copy">
+                          <span class="source-card-title">Glassdoor</span>
+                          <span class="source-card-meta">Global</span>
+                        </span>
+                      </span>
+                      <span class="source-lock" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4">
+                          <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.8"></rect>
+                          <path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                        </svg>
+                      </span>
+                    </button>
+                    <button type="button" data-portal-source="wellfound" class="source-card">
+                      <span class="flex min-w-0 items-center gap-3">
+                        <img src="https://www.google.com/s2/favicons?domain=wellfound.com&sz=64" alt="Wellfound favicon" class="source-favicon-img" />
+                        <span class="source-card-copy">
+                          <span class="source-card-title">Wellfound</span>
+                          <span class="source-card-meta">Global</span>
+                        </span>
+                      </span>
+                      <span class="source-lock" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4">
+                          <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.8"></rect>
+                          <path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                        </svg>
+                      </span>
+                    </button>
+                    <button type="button" data-portal-source="remoteok" class="source-card">
+                      <span class="flex min-w-0 items-center gap-3">
+                        <img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="Remote OK favicon" class="source-favicon-img" />
+                        <span class="source-card-copy">
+                          <span class="source-card-title">Remote OK</span>
+                          <span class="source-card-meta">Global</span>
+                        </span>
+                      </span>
+                      <span class="source-lock" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4">
+                          <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.8"></rect>
+                          <path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                        </svg>
+                      </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="source-ai-card">
+                  <span class="source-ai-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6">
+                      <path d="M12 3v4M12 17v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M3 12h4M17 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path>
+                      <circle cx="12" cy="12" r="3.2" fill="currentColor" opacity="0.22"></circle>
+                    </svg>
+                  </span>
+                  <span class="min-w-0 flex-1">
+                    <span class="source-ai-title">Sugerencia IA</span>
+                    <p class="source-ai-copy">Para perfiles tech en Latam recomendamos comenzar con <strong>LinkedIn</strong> para obtener los mejores resultados.</p>
+                  </span>
+                  <span class="source-ai-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6">
+                      <rect x="5" y="7" width="14" height="10" rx="5" stroke="currentColor" stroke-width="1.7"></rect>
+                      <circle cx="10" cy="12" r="1" fill="currentColor"></circle>
+                      <circle cx="14" cy="12" r="1" fill="currentColor"></circle>
+                      <path d="M12 5v2M9 19h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+
+              <div class="source-floating-bar">
+                <button id="continueToJobsBtn" class="source-cta">
+                  <span>Iniciar búsqueda con IA</span>
+                  <span class="action-btn-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                      <path d="m12 5 7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                  </span>
+                </button>
+
+                <div class="source-footer-note">
+                  <span aria-hidden="true">🔒</span>
+                  <span>Tus datos están protegidos y encriptados</span>
+                </div>
+              </div>
+
+              <div id="cvImprovePanel" class="hidden mt-3">
+                <div id="magicLoader" class="hidden flex items-center gap-2 py-2">
+                  <span class="magic-spinner" aria-hidden="true"></span>
+                  <span class="text-xs text-[#4d6570]">Mejorando CV...</span>
+                </div>
+
+                <div class="paper-card p-3">
+                  <div class="flex items-center justify-between gap-2 mb-2">
+                    <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">CV Mejorado</p>
+                    <button id="backToActionsBtn" class="btn-ghost text-[11px]">← Volver</button>
+                  </div>
+                  <p class="text-[12px] text-[#4d6570] mb-2">Revisa y edita tu CV optimizado antes de guardar.</p>
+                  <textarea id="improvedCvText" class="w-full h-32 px-3 py-2 text-[12px] border border-gray-200 rounded-lg font-mono resize-none" placeholder="CV mejorado aparecerá aquí..."></textarea>
+
+                  <div class="mt-3 flex gap-2">
+                    <button id="magicImproveBtn" class="action-btn action-btn-secondary flex-1 py-2 text-[13px]">
+                      <span class="action-btn-icon" aria-hidden="true">✨</span>
+                      <span>Mejorar con IA</span>
+                    </button>
+                  </div>
+
+                  <div id="saveSuccess" class="hidden mt-2 text-center text-[12px] text-green-600 font-medium">✓ Guardado correctamente</div>
+
+                  <div class="mt-3 flex gap-2">
+                    <button id="saveImprovedCvBtn" class="btn-primary flex-1 py-2 text-[13px]">Guardar CV</button>
+                    <button id="downloadImprovedPdfBtn" class="action-btn action-btn-secondary py-2 text-[13px]">
+                      <span class="action-btn-icon" aria-hidden="true">↓</span>
+                      <span>PDF</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button id="backToCvBtn" class="back-btn mt-3 w-full py-2 text-[14px]">
+              <span class="back-btn-icon" aria-hidden="true">←</span>
+              <span>Volver</span>
+            </button>
+            <button id="backToCvBtnInline" class="hidden back-btn mt-2 w-full py-2 text-[13px]">
+              <span class="back-btn-icon" aria-hidden="true">←</span>
+              <span>Volver al CV</span>
+            </button>
+            <button id="improveCvBtn" class="action-btn action-btn-secondary mt-3 w-full py-2 text-[14px]">
+              <span class="action-btn-icon" aria-hidden="true">✨</span>
+              <span>Mejorar CV con IA</span>
+            </button>
+          </div>
+
+
+          <div id="jobDashboard" class="hidden min-h-0 flex-1 flex-col overflow-y-auto">
+            <div class="job-dashboard-header">
+              <span class="job-step-badge">PASO 3</span>
+              <div class="job-portal-header">
+                <div class="job-portal-info">
+                  <span id="activePortalIcon" class="job-portal-logo" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <rect x="2" y="2" width="20" height="20" rx="5" fill="#0A66C2"></rect>
+                      <path d="M8.06 10.03H5.65V18.1H8.06V10.03Z" fill="white"></path>
+                      <path d="M6.85 6.12C6.08 6.12 5.46 6.74 5.46 7.5C5.46 8.26 6.08 8.88 6.85 8.88C7.61 8.88 8.23 8.26 8.23 7.5C8.23 6.74 7.61 6.12 6.85 6.12Z" fill="white"></path>
+                      <path d="M18.54 13.33C18.54 10.86 17.22 9.71 15.46 9.71C14.04 9.71 13.4 10.49 13.05 11.03V10.03H10.74C10.77 10.69 10.74 18.1 10.74 18.1H13.05V13.59C13.05 13.35 13.07 13.11 13.14 12.94C13.33 12.45 13.77 11.95 14.5 11.95C15.46 11.95 15.84 12.68 15.84 13.75V18.1H18.15V13.33H18.54Z" fill="white"></path>
+                    </svg>
+                  </span>
+                  <div>
+                    <h2 id="activePortalLabel" class="job-portal-title">LinkedIn</h2>
+                    <p class="job-portal-subtitle">AI Search · <span id="jobsResultCount">0 resultados</span></p>
+                  </div>
+                </div>
+                <button id="openSearchBtn" class="job-search-btn">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <circle cx="11" cy="11" r="5.5" stroke="currentColor" stroke-width="2"></circle>
+                    <path d="M16 16L20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                  </svg>
+                  <span>Buscar</span>
+                </button>
+              </div>
+            </div>
+
+            <div id="jobsTab" class="job-dashboard-content">
+              <div id="jobsEmptyState" class="job-empty-state">
+                <div class="job-empty-icon">
+                  <span class="magic-spinner" aria-hidden="true"></span>
+                </div>
+                <div id="jobsEmptyProgress" class="jobs-progress-shell hidden mt-2" aria-hidden="true">
+                  <div class="jobs-progress-track">
+                    <div class="jobs-progress-bar"></div>
+                  </div>
+                </div>
+                <p class="job-empty-title">Esperando búsqueda</p>
+                <p class="job-empty-text">Abre LinkedIn o entra a una vacante para cargar resultados.</p>
+                <button id="openSearchEmptyBtn" class="job-search-btn job-search-btn-primary mt-4">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <circle cx="11" cy="11" r="5.5" stroke="currentColor" stroke-width="2"></circle>
+                    <path d="M16 16L20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                  </svg>
+                  <span>Buscar</span>
+                </button>
+              </div>
+
+              <div id="jobsResultsPanel" class="hidden">
+                <div class="job-selected-card">
+                  <div class="job-selected-header">
+                    <span class="job-selected-badge">
+                      <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                      </svg>
+                      <span>SELECCIONADA</span>
+                    </span>
+                  </div>
+                  
+                  <div class="job-selected-body">
+                    <div class="job-selected-main">
+                      <div id="bestJobLogoShell" class="job-company-logo hidden">
+                        <img id="bestJobLogo" class="job-company-logo-img" alt="Company logo" />
+                      </div>
+                      <div class="job-selected-info">
+                        <p id="bestJobTitle" class="job-selected-title">Senior Full-Stack Engineer (Node.js, AI)</p>
+                        <div class="job-selected-meta">
+                          <span id="bestJobCompany">Blockskye</span>
+                          <span class="job-meta-dot">·</span>
+                          <span id="bestJobLocation">Valais, Switzerland</span>
+                          <span class="job-meta-dot">·</span>
+                          <span id="bestJobRemote" class="job-remote-badge">
+                            <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5">
+                              <path d="M5 12.55a11 11 0 0 1 14.08 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                              <path d="M1.42 9a16 16 0 0 1 21.16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                              <path d="M8.53 16.11a6 6 0 0 1 6.95 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                              <circle cx="12" cy="20" r="1" fill="currentColor"/>
+                            </svg>
+                            Remote
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="bestJobScore" class="job-fit-score">
+                      <svg viewBox="0 0 100 100" class="job-fit-score-ring">
+                        <circle cx="50" cy="50" r="42" fill="none" stroke="#e5e7eb" stroke-width="6"/>
+                        <circle id="bestJobScoreRing" cx="50" cy="50" r="42" fill="none" stroke="url(#scoreGradient)" stroke-width="6" stroke-linecap="round" stroke-dasharray="264" stroke-dashoffset="264" transform="rotate(-90 50 50)"/>
+                        <defs>
+                          <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#3b82f6"/>
+                            <stop offset="100%" stop-color="#60a5fa"/>
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                      <div class="job-fit-score-text">
+                        <span id="bestJobScoreValue">100%</span>
+                        <span>Fit Score</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="bestJobTier" class="job-tier-badge job-tier-badge-top">
+                    <span>🔥</span>
+                    <span>Top Match</span>
+                  </div>
+
+                  <p id="bestJobDescription" class="job-selected-description">Coincidencia perfecta entre tu perfil y los requisitos de esta vacante.</p>
+
+                  <div class="job-ai-analysis">
+                    <p class="job-ai-analysis-title">
+                      <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4">
+                        <path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z" fill="currentColor" opacity="0.3"/>
+                        <circle cx="12" cy="12" r="3" fill="currentColor"/>
+                      </svg>
+                      Análisis IA
+                    </p>
+                    <div id="bestJobAnalysis" class="job-ai-analysis-list">
+                      <div class="job-analysis-item">
+                        <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4">
+                          <circle cx="12" cy="12" r="10" fill="#22c55e"/>
+                          <path d="M8 12l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Alta compatibilidad en skills: Node.js, AI, Full-Stack</span>
+                      </div>
+                      <div class="job-analysis-item">
+                        <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4">
+                          <circle cx="12" cy="12" r="10" fill="#22c55e"/>
+                          <path d="M8 12l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Experiencia senior alineada con el puesto</span>
+                      </div>
+                      <div class="job-analysis-item">
+                        <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4">
+                          <circle cx="12" cy="12" r="10" fill="#22c55e"/>
+                          <path d="M8 12l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Perfil ideal para trabajo remoto</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button id="applyJob" class="job-apply-btn">
+                    <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5">
+                      <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M2 17l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Aplicar automáticamente</span>
+                    <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5">
+                      <path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="m12 5 7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                  <p class="job-apply-hint">IA completará el formulario por ti</p>
+                </div>
+
+                <div class="job-auto-mode">
+                  <div class="job-auto-mode-icon">
+                    <svg viewBox="0 0 24 24" fill="none" class="w-8 h-8">
+                      <rect x="4" y="8" width="16" height="10" rx="4" fill="#8b5cf6" opacity="0.2"/>
+                      <rect x="4" y="8" width="16" height="10" rx="4" stroke="#8b5cf6" stroke-width="1.5"/>
+                      <circle cx="9" cy="13" r="1.5" fill="#8b5cf6"/>
+                      <circle cx="15" cy="13" r="1.5" fill="#8b5cf6"/>
+                      <path d="M8 4v4" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round"/>
+                      <path d="M16 4v4" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round"/>
+                      <path d="M7 20h10" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    <span class="job-auto-mode-badge"></span>
+                  </div>
+                  <div class="job-auto-mode-content">
+                    <p class="job-auto-mode-title">Modo automático</p>
+                    <p class="job-auto-mode-text">Aplica a múltiples vacantes mientras navegas.</p>
+                    <p class="job-auto-mode-security">
+                      <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#8b5cf6" stroke-width="1.5"/>
+                        <path d="m9 12 2 2 4-4" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      Seguro, rápido y optimizado con IA
+                    </p>
+                  </div>
+                  <div class="job-auto-mode-dropdown" id="batchApplyDropdown">
+                    <span id="batchApplyCountDisplay" class="job-vacancies-count">3 vacantes</span>
+                    <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4">
+                      <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <select id="batchApplyCount" class="hidden">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3" selected>3</option>
+                      <option value="4">4</option>
+                      <option value="10">10</option>
+                    </select>
+                  </div>
+                </div>
+
+                <p class="job-security-footer">
+                  <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4">
+                    <rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="1.5"/>
+                  </svg>
+                  Tus datos están protegidos y encriptados
+                </p>
+
+                <div id="jobsListContainer" class="paper-card mt-4 hidden">
+                  <div class="flex items-center justify-between gap-3">
+                    <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Paso 3 · Vacantes</p>
+                    <span class="label-ui text-[11px]">Primeros resultados</span>
+                  </div>
+                  <div id="jobsList" class="mt-3 space-y-2"></div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div id="profileTab" class="mt-4 hidden"></div>
+
+                <div id="jobsListContainer" class="paper-card mt-4 hidden">
+                  <div class="flex items-center justify-between gap-3">
+                    <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                    <span class="label-ui text-[11px]">Recomendadas</span>
+                  </div>
+                  <div id="jobsList" class="mt-3 space-y-2"></div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab" class="mt-4 hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab-placeholder" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab-placeholder" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab-placeholder" class="hidden"></div>
+
+                <div id="jobsListContainer" class="hidden">
+                  <div class="paper-card mt-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                      <span class="label-ui text-[11px]">Recomendadas</span>
+                    </div>
+                    <div id="jobsList" class="mt-3 space-y-2"></div>
+                  </div>
+                </div>
+
+                <div id="coverLetterBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Carta de presentación</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Genera una carta para esta vacante..."></textarea>
+                </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+
+                <div class="profileTab-placeholder" class="hidden"></div>
+
+                <button id="backBtn" class="job-back-btn mt-3">
+                  <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4">
+                    <path d="M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="m12 19-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span>Volver al CV</span>
+                </button>
+              </div>
+
+                <div id="quickAnswersBox" class="hidden paper-card mt-3 p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Respuestas rápidas</p>
+                  <textarea class="w-full h-20 px-3 py-2 text-[12px] border border-gray-200 rounded-lg mt-2 font-mono resize-none" placeholder="Respuestas generadas por IA..."></textarea>
+                  <button id="generateAnswersBtn" class="action-btn action-btn-secondary mt-2 w-full py-2 text-[13px]">
+                    <span class="action-btn-icon" aria-hidden="true">✨</span>
+                    <span>Generar respuestas</span>
+                  </button>
+                </div>
+
+                <div class="paper-card mt-3 hidden" id="jobsListContainer">
+                  <div class="flex items-center justify-between gap-3">
+                    <p class="label-ui text-[11px] font-medium uppercase tracking-[0.22em]">Vacantes</p>
+                    <span class="label-ui text-[11px]">Recomendadas</span>
+                  </div>
+                  <div id="jobsList" class="mt-3 space-y-2"></div>
+                </div>
+
+                <button id="batchApplyJobs" class="hidden btn-secondary mt-2 w-full py-2.5 text-[14px]">Postular lote Easy Apply</button>
+
+                <div id="trackerTab" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Tracker</p>
+                  <div id="trackerList" class="space-y-2"></div>
+                </div>
+
+                <div id="historyListSection" class="mt-4 hidden">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-2">Historial de búsquedas</p>
+                  <div id="historyList" class="space-y-2"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Menu Panel -->
+
+        <div id="userMenuPanel" class="hidden min-h-0 flex-1 flex-col">
+          <div class="module-card account-view-shell flex flex-1 flex-col">
+            <div class="account-view-scroll">
+              <div class="flex items-center justify-between gap-3 mb-4">
+                <p class="label-ui text-xs font-medium uppercase tracking-[0.22em]">Mi Cuenta</p>
+                <button id="closeUserMenuBtn" class="btn-ghost text-xs">✕</button>
+              </div>
+              
+              <div class="flex items-center gap-3 mb-4 pb-4 border-b border-gray-200">
+                <div class="w-12 h-12 rounded-full bg-[#0f5d86] text-white flex items-center justify-center text-lg font-bold" id="menuUserInitial">U</div>
+                <div>
+                  <p id="menuUserName" class="title-display text-[15px] font-semibold text-[#071e27]">Usuario</p>
+                  <p id="menuUserEmail" class="text-xs text-[#4d6570]">email@example.com</p>
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <button id="menuProfileBtn" class="menu-btn w-full">
+                  <span class="menu-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
+                      <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="1.8"></path>
+                      <path d="M4.5 20a7.5 7.5 0 0 1 15 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                    </svg>
+                  </span>
+                  <span>Mi perfil</span>
+                </button>
+                <button id="menuCvsBtn" class="menu-btn w-full">
+                  <span class="menu-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
+                      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path>
+                      <path d="M14 3v5h5" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path>
+                      <path d="M9 13h6M9 17h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                    </svg>
+                  </span>
+                  <span>Mis CVs</span>
+                </button>
+                <button id="menuApplicationsBtn" class="menu-btn w-full">
+                  <span class="menu-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
+                      <rect x="3" y="5" width="18" height="14" rx="3" stroke="currentColor" stroke-width="1.8"></rect>
+                      <path d="m6 9 6 4 6-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                  </span>
+                  <span>Mis postulaciones</span>
+                </button>
+                <button id="menuSearchesBtn" class="menu-btn w-full">
+                  <span class="menu-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
+                      <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.8"></circle>
+                      <path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                    </svg>
+                  </span>
+                  <span>Historial de búsquedas</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="account-view-footer">
+              <button id="menuLogoutBtn" class="btn-secondary w-full py-2 text-[14px]">Cerrar sesión</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile View -->
+
+        <div id="profileView" class="hidden h-full min-h-0 flex-1 flex-col overflow-hidden">
+          <div class="module-card account-view-shell flex h-full min-h-0 flex-1 flex-col">
+            <div class="account-view-scroll flex-1 overflow-y-auto">
+              <div class="flex items-center justify-between gap-3 mb-3">
+                <p class="label-ui text-xs font-medium uppercase tracking-[0.22em]">Mi Perfil</p>
+                <button id="closeProfileBtn" class="btn-ghost text-xs">✕</button>
+              </div>
+              
+              <!-- Profile Tabs -->
+              <div class="profile-tabs flex gap-1 mb-4 p-1 rounded-xl bg-[#f0f5f8]">
+                <button type="button" data-profile-tab="resumen" class="profile-tab-btn flex-1 py-2 px-3 text-[11px] font-semibold rounded-lg transition-all bg-[#0f5d86] text-white">
+                  📋 Resumen
+                </button>
+                <button type="button" data-profile-tab="editar" class="profile-tab-btn flex-1 py-2 px-3 text-[11px] font-semibold rounded-lg transition-all text-[#4d6570] hover:text-[#071e27]">
+                  ✏️ Editar
+                </button>
+                <button type="button" data-profile-tab="actividad" class="profile-tab-btn flex-1 py-2 px-3 text-[11px] font-semibold rounded-lg transition-all text-[#4d6570] hover:text-[#071e27]">
+                  📊 Actividad
+                </button>
+              </div>
+
+              <!-- Resumen Tab Content -->
+              <div id="profileResumenTab" class="profile-tab-content">
+                <!-- Profile Stats -->
+                <div class="paper-card p-3 mb-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-3">Resumen del perfil</p>
+                  <div id="profileStats" class="grid grid-cols-3 gap-2">
+                    <div class="rounded-xl bg-[#f4f9fc] px-3 py-2 text-center">
+                      <p class="title-display text-[16px] font-semibold text-[#071e27]">0</p>
+                      <p class="text-[11px] text-[#4d6570]">CVs</p>
+                    </div>
+                    <div class="rounded-xl bg-[#f4f9fc] px-3 py-2 text-center">
+                      <p class="title-display text-[16px] font-semibold text-[#071e27]">0</p>
+                      <p class="text-[11px] text-[#4d6570]">Postulaciones</p>
+                    </div>
+                    <div class="rounded-xl bg-[#f4f9fc] px-3 py-2 text-center">
+                      <p class="title-display text-[16px] font-semibold text-[#071e27]">0</p>
+                      <p class="text-[11px] text-[#4d6570]">Búsquedas</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- CV Details -->
+                <div class="paper-card p-3 mb-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-3">Datos extraídos del CV</p>
+                  <div id="profileCvDetails">
+                    <p class="text-sm text-[#4d6570] text-center py-2">Sube un CV para ver todos los campos extraídos aquí.</p>
+                  </div>
+                </div>
+
+                <!-- Plan Card -->
+                <div class="paper-card p-3">
+                  <div id="planCard" class="plan-card">
+                    <div class="flex items-start justify-between gap-3">
+                      <div>
+                        <span id="planStatusBadge" class="plan-badge">Trial activo</span>
+                        <p class="title-display mt-3 text-[16px] font-semibold text-[#071e27]">Plan actual: <span id="planCurrentName">Freemium</span></p>
+                        <p id="planStatusCopy" class="mt-2 text-[12px] leading-5 text-[#4d6570]">Todo usuario nuevo entra en trial Freemium.</p>
+                      </div>
+                      <div class="rounded-2xl bg-[#0f5d86] px-3 py-2 text-right text-white">
+                        <p id="planRemaining" class="title-display text-[18px] font-semibold">10</p>
+                        <p class="text-[10px] uppercase tracking-[0.18em] text-white/75">restantes</p>
+                      </div>
+                    </div>
+                    <div class="mt-4">
+                      <div class="flex items-center justify-between gap-2 text-[11px] text-[#4d6570]">
+                        <span id="planUsageTitle">Uso de este mes</span>
+                        <span id="planUsageLabel">0 / 10 usadas este mes</span>
+                      </div>
+                      <div class="plan-progress mt-2">
+                        <div id="planProgressBar" class="plan-progress-bar" style="width: 0%"></div>
+                      </div>
+                    </div>
+                    <button id="openPricingBtn" class="btn-primary mt-4 w-full py-2 text-[14px]">Ver planes y pagar</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Editar Tab Content -->
+              <div id="profileEditarTab" class="profile-tab-content hidden">
+                <div class="paper-card p-3">
+                  <div class="space-y-3">
+                    <div>
+                      <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Nombre completo</label>
+                      <input id="profileName" type="text" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1" placeholder="Tu nombre" />
+                    </div>
+                    <div>
+                      <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Email</label>
+                      <input id="profileEmail" type="email" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1" disabled />
+                    </div>
+                    <div>
+                      <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Teléfono</label>
+                      <input id="profilePhone" type="tel" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1" placeholder="+41 XX XXX XXXX" />
+                    </div>
+                    <div>
+                      <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Ubicación completa</label>
+                      <input id="profileLocation" type="text" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1" placeholder="Zurich, Switzerland" />
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                      <div>
+                        <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Ciudad</label>
+                        <input id="profileCity" type="text" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1" placeholder="Zurich" />
+                      </div>
+                      <div>
+                        <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Cantón/Provincia</label>
+                        <input id="profileState" type="text" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1" placeholder="Zurich" />
+                      </div>
+                    </div>
+                    <div>
+                      <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">País</label>
+                      <input id="profileCountry" type="text" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1" placeholder="Switzerland" />
+                    </div>
+                    <div>
+                      <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Rol objetivo</label>
+                      <input id="profileRole" type="text" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1" placeholder="Software Engineer" />
+                    </div>
+                    <div>
+                      <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Skills (separadas por coma)</label>
+                      <input id="profileSkills" type="text" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1" placeholder="React, TypeScript, Node.js" />
+                    </div>
+                    <div>
+                      <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Seniority</label>
+                      <select id="profileSeniority" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1">
+                        <option value="">Seleccionar</option>
+                        <option value="junior">Junior</option>
+                        <option value="mid">Mid</option>
+                        <option value="senior">Senior</option>
+                        <option value="lead">Lead</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="label-ui text-[11px] font-medium uppercase tracking-[0.2em]">Preferencia remoto</label>
+                      <select id="profileRemote" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg mt-1">
+                        <option value="">Seleccionar</option>
+                        <option value="remote">Remoto</option>
+                        <option value="hybrid">Híbrido</option>
+                        <option value="onsite">Presencial</option>
+                      </select>
+                    </div>
+                  </div>
+                  <button id="saveProfileBtn" class="btn-primary w-full mt-4 py-2 text-[14px]">💾 Guardar perfil</button>
+                </div>
+              </div>
+
+              <!-- Actividad Tab Content -->
+              <div id="profileActividadTab" class="profile-tab-content hidden">
+                <!-- Activity History -->
+                <div class="paper-card p-3 mb-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-3">Historial de actividad</p>
+                  <div id="profileActivityList" class="space-y-2">
+                    <p class="text-sm text-[#4d6570] text-center py-2">Sin actividad reciente.</p>
+                  </div>
+                </div>
+
+                <!-- CVs History -->
+                <div class="paper-card p-3">
+                  <p class="label-ui text-[11px] font-medium uppercase tracking-[0.2em] mb-3">CVs subidos</p>
+                  <div id="profileCvsList" class="space-y-2">
+                    <p class="text-sm text-[#4d6570] text-center py-2">Sin CVs subidos.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="cvsView" class="hidden h-full min-h-0 flex-1 flex-col overflow-hidden">
+          <div class="module-card account-view-shell flex h-full min-h-0 flex-1 flex-col">
+            <div class="account-view-scroll flex-1 overflow-y-auto">
+              <div class="flex items-center justify-between gap-3 mb-4">
+                <p class="label-ui text-xs font-medium uppercase tracking-[0.22em]">Mis CVs</p>
+                <button id="closeCvsBtn" class="btn-ghost text-xs">✕</button>
+              </div>
+              <div id="cvsList" class="space-y-2">
+                <p class="text-sm text-[#4d6570] text-center py-4">Cargando tus CVs...</p>
+              </div>
+            </div>
+            
+            <div class="account-view-footer">
+              <button id="backFromCvsBtn" class="back-btn w-full py-2 text-[14px]">
+                <span class="back-btn-icon">←</span>
+                <span>Volver</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Applications View -->
+
+        <div id="applicationsView" class="hidden h-full min-h-0 flex-1 flex-col overflow-hidden">
+          <div class="module-card account-view-shell flex h-full min-h-0 flex-1 flex-col">
+            <div class="account-view-scroll flex-1 overflow-y-auto">
+              <div class="flex items-center justify-between gap-3 mb-4">
+                <p class="label-ui text-xs font-medium uppercase tracking-[0.22em]">Mis Postulaciones</p>
+                <button id="closeApplicationsBtn" class="btn-ghost text-xs">✕</button>
+              </div>
+              <div id="applicationsList" class="space-y-2">
+                <p class="text-sm text-[#4d6570] text-center py-4">Cargando postulaciones...</p>
+              </div>
+            </div>
+            
+            <div class="account-view-footer">
+              <button id="backFromApplicationsBtn" class="back-btn w-full py-2 text-[14px]">
+                <span class="back-btn-icon">←</span>
+                <span>Volver</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Searches View -->
+
+        <div id="searchesView" class="hidden min-h-0 flex-1 flex-col">
+          <div class="module-card account-view-shell flex flex-1 flex-col">
+            <div class="account-view-scroll">
+              <div class="flex items-center justify-between gap-3 mb-4">
+                <p class="label-ui text-xs font-medium uppercase tracking-[0.22em]">Historial de Búsquedas</p>
+                <button id="closeSearchesBtn" class="btn-ghost text-xs">✕</button>
+              </div>
+              <div id="searchesList" class="space-y-2">
+                <p class="text-sm text-[#4d6570] text-center py-4">Cargando búsquedas...</p>
+              </div>
+            </div>
+            
+            <div class="account-view-footer">
+              <button id="backFromSearchesBtn" class="back-btn w-full py-2 text-[14px]">
+                <span class="back-btn-icon">←</span>
+                <span>Volver</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+        <div id="upgradeView" class="hidden min-h-0 flex-1 flex-col">
+          <div class="module-card account-view-shell flex flex-1 flex-col">
+            <div class="account-view-scroll">
+              <div class="flex items-center justify-between gap-3 mb-4">
+                <p class="label-ui text-xs font-medium uppercase tracking-[0.22em]">Upgrade</p>
+                <button id="closeUpgradeBtn" class="btn-ghost text-xs">✕</button>
+              </div>
+
+              <div class="plan-card">
+                <span class="plan-badge">Limite alcanzado</span>
+                <p class="title-display mt-3 text-[19px] font-semibold text-[#071e27]">Sigue postulando con un plan pago.</p>
+                <p class="mt-2 text-[12px] leading-5 text-[#4d6570]">
+                  Cuando se termina la cuota del plan actual, puedes hacer upgrade para desbloquear mas postulaciones automáticas y acceso a funciones premium.
+                </p>
+
+                <div class="mt-4 grid gap-2">
+                  <div class="plan-feature"><strong class="text-[#071e27]">Plan basico</strong>: 100 postulaciones por USD 9.9</div>
+                  <div class="plan-feature"><strong class="text-[#071e27]">Plan Mejorado</strong>: 250 postulaciones por USD 14.9</div>
+                  <div class="plan-feature"><strong class="text-[#071e27]">Plan avanzado</strong>: 500 postulaciones por USD 19.9</div>
+                  <div class="plan-feature"><strong class="text-[#071e27]">Planes premium</strong>: Estrella, Diamond y Ultra con correos directos y outreach.</div>
+                </div>
+
+                <button id="upgradeNowBtn" class="btn-primary mt-4 w-full py-2.5 text-[14px]">Ir a pagar en TRCVASTIAN</button>
+              </div>
+            </div>
+
+            <div class="account-view-footer">
+              <button id="backFromUpgradeBtn" class="back-btn w-full py-2 text-[14px]">
+                <span class="back-btn-icon">←</span>
+                <span>Volver</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="./node_modules/jszip/dist/jszip.min.js"></script>
+    <script src="firebase-app.js"></script>
+    <script src="firebase-auth.js"></script>
+    <script src="firebase-firestore.js"></script>
+    <script src="firebase-ready.js"></script>
+    <script src="popup.js" type="module"></script>
+  </body>
+</html>

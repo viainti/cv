@@ -1,0 +1,227 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --ca-surface: #f3faff;
+  --ca-surface-low: #eaf5fb;
+  --ca-surface-container: #dbf1fe;
+  --ca-surface-high: #eef8fd;
+  --ca-surface-highest: #d7edf8;
+  --ca-surface-lowest: #ffffff;
+  --ca-surface-bright: rgba(255, 255, 255, 0.82);
+  --ca-primary: #004564;
+  --ca-primary-container: #1c5d80;
+  --ca-secondary-container: #81f3e5;
+  --ca-on-secondary-container: #006f66;
+  --ca-tertiary-container: #c9f0f9;
+  --ca-on-tertiary-container: #0a5d74;
+  --ca-on-surface: #071e27;
+  --ca-on-surface-variant: #4d6570;
+  --ca-outline-ghost: rgba(193, 199, 209, 0.15);
+}
+
+html,
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(129, 243, 229, 0.18), transparent 28%),
+    radial-gradient(circle at top right, rgba(28, 93, 128, 0.12), transparent 34%),
+    linear-gradient(180deg, var(--ca-surface) 0%, var(--ca-surface-low) 100%);
+  color: var(--ca-on-surface);
+  font-family: "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+@layer components {
+  .glass-card {
+    @apply rounded-[28px];
+    background: color-mix(in srgb, var(--ca-surface-bright) 92%, transparent);
+    box-shadow: 0 0 0 1px var(--ca-outline-ghost), 0 24px 60px rgba(7, 30, 39, 0.06);
+    backdrop-filter: blur(12px);
+  }
+
+  .input-ui {
+    @apply w-full rounded-xl px-4 py-2.5 text-sm outline-none transition;
+    background: var(--ca-surface-highest);
+    color: var(--ca-on-surface);
+    box-shadow: inset 0 -2px 0 rgba(7, 30, 39, 0.06);
+  }
+
+  .input-ui::placeholder {
+    color: color-mix(in srgb, var(--ca-on-surface-variant) 72%, white);
+  }
+
+  .input-ui:focus {
+    background: var(--ca-surface-lowest);
+    box-shadow:
+      inset 0 -2px 0 var(--ca-primary),
+      0 0 0 4px rgba(28, 93, 128, 0.08);
+  }
+
+  .btn-primary {
+    @apply rounded-2xl px-4 py-2.5 text-sm font-medium text-white transition;
+    background: linear-gradient(135deg, var(--ca-primary) 0%, var(--ca-primary-container) 100%);
+    box-shadow: 0 18px 30px rgba(0, 69, 100, 0.16);
+    font-family: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .btn-secondary {
+    @apply rounded-2xl px-4 py-2.5 text-sm font-normal transition;
+    background: var(--ca-surface-highest);
+    color: var(--ca-on-surface);
+    box-shadow: inset 0 0 0 1px var(--ca-outline-ghost);
+  }
+
+  .title-display {
+    font-family: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: -0.028em;
+  }
+
+  .platform-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .platform-card {
+    width: 100%;
+    border-radius: 1.25rem;
+    padding: 0.9rem 1rem;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: inset 0 0 0 1px rgba(193, 199, 209, 0.22);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  }
+
+  .platform-card:hover {
+    transform: translateY(-1px);
+    background: var(--ca-surface-lowest);
+    box-shadow: 0 12px 24px rgba(7, 30, 39, 0.06), inset 0 0 0 1px rgba(28, 93, 128, 0.16);
+  }
+
+  .platform-brand {
+    display: inline-flex;
+    min-width: 4.15rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    border-radius: 999px;
+    padding: 0.35rem 0.5rem;
+    box-shadow: inset 0 0 0 1px rgba(193, 199, 209, 0.18);
+  }
+
+  .platform-favicon,
+  .platform-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    font-family: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 800;
+  }
+
+  .platform-favicon {
+    min-width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 0.63rem;
+    text-transform: lowercase;
+    letter-spacing: -0.04em;
+  }
+
+  .platform-logo {
+    font-size: 0.68rem;
+    letter-spacing: -0.04em;
+  }
+
+  .platform-card-title,
+  .platform-card-meta {
+    display: block;
+  }
+
+  .platform-card-title {
+    color: var(--ca-on-surface);
+    font-family: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  .platform-card-meta {
+    margin-top: 0.15rem;
+    color: var(--ca-on-surface-variant);
+    font-size: 0.75rem;
+  }
+
+  .platform-chip-linkedin {
+    background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+    color: #0a66c2;
+  }
+
+  .platform-chip-getonboard {
+    background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+    color: #8bff61;
+  }
+
+  .platform-chip-computrabajo {
+    background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+    color: #2563eb;
+  }
+
+  .platform-chip-bumeran {
+    background: linear-gradient(135deg, #ffe4e6 0%, #fff1f2 100%);
+    color: #e11d48;
+  }
+
+  .platform-chip-laborum {
+    background: linear-gradient(135deg, #e0e7ff 0%, #eef2ff 100%);
+    color: #4f46e5;
+  }
+
+  .platform-chip-elempleo {
+    background: linear-gradient(135deg, #ffedd5 0%, #fff7ed 100%);
+    color: #f97316;
+  }
+
+  .platform-chip-indeed {
+    background: linear-gradient(135deg, #e0e7ff 0%, #eef2ff 100%);
+    color: #4338ca;
+  }
+
+  .platform-chip-glassdoor {
+    background: linear-gradient(135deg, #dcfce7 0%, #ecfdf5 100%);
+    color: #15803d;
+  }
+
+  .platform-chip-wellfound {
+    background: linear-gradient(135deg, #ede9fe 0%, #f5f3ff 100%);
+    color: #7c3aed;
+  }
+
+  .platform-chip-remoteok {
+    background: linear-gradient(135deg, #ede9fe 0%, #eff6ff 100%);
+    color: #4f46e5;
+  }
+
+  .platform-chip-weworkremotely {
+    background: linear-gradient(135deg, #fee2e2 0%, #fff1f2 100%);
+    color: #be123c;
+  }
+
+  .platform-chip-torre {
+    background: linear-gradient(135deg, #dcfce7 0%, #f0fdf4 100%);
+    color: #166534;
+  }
+
+  .platform-chip-jooble {
+    background: linear-gradient(135deg, #dbeafe 0%, #eef8fd 100%);
+    color: #2563eb;
+  }
+}
+
+@media (max-width: 767px) {
+  .platform-grid {
+    grid-template-columns: 1fr;
+  }
+}

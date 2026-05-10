@@ -1,0 +1,5 @@
+export const DEFAULT_OPENROUTER_API_KEY =
+  process.env.NEXT_PUBLIC_DEFAULT_OPENROUTER_API_KEY ||
+  "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";
+
+export const DEFAULT_MODEL = process.env.NEXT_PUBLIC_DEFAULT_MODEL || "openai/gpt-4o-mini";

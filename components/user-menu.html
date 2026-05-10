@@ -1,0 +1,64 @@
+        <div id="userMenuPanel" class="hidden min-h-0 flex-1 flex-col">
+          <div class="module-card account-view-shell flex flex-1 flex-col">
+            <div class="account-view-scroll">
+              <div class="flex items-center justify-between gap-3 mb-4">
+                <p class="label-ui text-xs font-medium uppercase tracking-[0.22em]">Mi Cuenta</p>
+                <button id="closeUserMenuBtn" class="btn-ghost text-xs">✕</button>
+              </div>
+              
+              <div class="flex items-center gap-3 mb-4 pb-4 border-b border-gray-200">
+                <div class="w-12 h-12 rounded-full bg-[#0f5d86] text-white flex items-center justify-center text-lg font-bold" id="menuUserInitial">U</div>
+                <div>
+                  <p id="menuUserName" class="title-display text-[15px] font-semibold text-[#071e27]">Usuario</p>
+                  <p id="menuUserEmail" class="text-xs text-[#4d6570]">email@example.com</p>
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <button id="menuProfileBtn" class="menu-btn w-full">
+                  <span class="menu-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
+                      <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="1.8"></path>
+                      <path d="M4.5 20a7.5 7.5 0 0 1 15 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                    </svg>
+                  </span>
+                  <span>Mi perfil</span>
+                </button>
+                <button id="menuCvsBtn" class="menu-btn w-full">
+                  <span class="menu-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
+                      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path>
+                      <path d="M14 3v5h5" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path>
+                      <path d="M9 13h6M9 17h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                    </svg>
+                  </span>
+                  <span>Mis CVs</span>
+                </button>
+                <button id="menuApplicationsBtn" class="menu-btn w-full">
+                  <span class="menu-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
+                      <rect x="3" y="5" width="18" height="14" rx="3" stroke="currentColor" stroke-width="1.8"></rect>
+                      <path d="m6 9 6 4 6-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                  </span>
+                  <span>Mis postulaciones</span>
+                </button>
+                <button id="menuSearchesBtn" class="menu-btn w-full">
+                  <span class="menu-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
+                      <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.8"></circle>
+                      <path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                    </svg>
+                  </span>
+                  <span>Historial de búsquedas</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="account-view-footer">
+              <button id="menuLogoutBtn" class="btn-secondary w-full py-2 text-[14px]">Cerrar sesión</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile View -->

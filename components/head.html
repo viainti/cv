@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TRCVASTIAN</title>
+    <link rel="stylesheet" href="./styles/output.css" />
+    <style>
+      body {
+        font-family: "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+        width: 400px;
+        height: 600px;
+        background:
+          radial-gradient(circle at top left, rgba(129, 243, 229, 0.18), transparent 28%),
+          radial-gradient(circle at top right, rgba(28, 93, 128, 0.12), transparent 34%),
+          linear-gradient(180deg, #f3faff 0%, #eaf5fb 100%);
+        overflow: hidden;
+      }
+
+      body.results-scroll-mode,
+      body.cv-improve-scroll-mode {
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(28, 93, 128, 0.42) rgba(255, 255, 255, 0.65);
+      }
+
+      body.results-scroll-mode main,
+      body.cv-improve-scroll-mode main {
+        min-height: 100%;
+        height: auto;
+        overflow: visible;
+      }
+
+      body.cv-improve-scroll-mode main {
+        max-height: none;
+      }
+
+      body.results-scroll-mode section,
+      body.cv-improve-scroll-mode section {
+        overflow: visible;
+      }
+
+      body.cv-improve-scroll-mode section {
+        min-height: auto;
+        height: auto;
+      }
+
+      body.cv-improve-scroll-mode #jobStep {
+        min-height: auto;
+        height: auto;
+      }
+
+      #jobActionStep.improve-scroll-active {
+        justify-content: flex-start;
+        gap: 10px;
+        min-height: 0;
+        height: auto;
+        overflow: visible;
+      }
+
+      #jobActionStep.improve-scroll-active > div {
+        min-height: 0;
+        overflow: visible;
+        padding-right: 0;
+      }
+
+      #jobActionStep.improve-scroll-active #cvImprovePanel {
+        max-height: none;
+        overflow: visible;
+      }
+
+      #jobsList,
+      #trackerList,
+      #historyList,
+      #trackerTab,
+      #profileTab {
+        scrollbar-width: none;
+      }
+
+      #jobsList::-webkit-scrollbar,
+      #trackerList::-webkit-scrollbar,
+      #historyList::-webkit-scrollbar,
+      #trackerTab::-webkit-scrollbar,
+      #profileTab::-webkit-scrollbar {
+        display: none;
+      }
+
+      body.results-scroll-mode::-webkit-scrollbar,
+      body.cv-improve-scroll-mode::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      body.results-scroll-mode::-webkit-scrollbar-track,
+      body.cv-improve-scroll-mode::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.68);
+        border-radius: 999px;
+      }
+
+      body.results-scroll-mode::-webkit-scrollbar-thumb,
+      body.cv-improve-scroll-mode::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, rgba(0, 69, 100, 0.72) 0%, rgba(28, 93, 128, 0.5) 100%);
+        border-radius: 999px;
+        border: 2px solid rgba(255, 255, 255, 0.68);
+      }
+
+      body.results-scroll-mode::-webkit-scrollbar-thumb:hover,
+      body.cv-improve-scroll-mode::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, rgba(0, 69, 100, 0.82) 0%, rgba(28, 93, 128, 0.62) 100%);
+      }
+      .account-view-shell {
+        min-height: 0;
+        overflow: hidden;
+      }
+      .account-view-scroll {
+        min-height: 0;
+        flex: 1 1 auto;
+        overflow-y: auto;
+        padding-right: 4px;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(28, 93, 128, 0.28) transparent;
+      }
+      .account-view-scroll::-webkit-scrollbar {
+        width: 8px;
+      }
+      .account-view-scroll::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .account-view-scroll::-webkit-scrollbar-thumb {
+        background: rgba(28, 93, 128, 0.22);
+        border-radius: 999px;
+      }
+      .account-view-footer {
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(193, 199, 209, 0.22);
+        background: linear-gradient(180deg, rgba(234, 245, 251, 0) 0%, rgba(234, 245, 251, 0.92) 26%, rgba(234, 245, 251, 1) 100%);
+      }
+       .menu-btn { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 0; border-radius: 12px; background: #f4f9fc; color: #071e27; font: 500 14px/1 Inter, system-ui, sans-serif; cursor: pointer; transition: background .15s ease, transform .15s ease; text-align: left; }
+       .menu-btn:hover { background: #eef5fa; transform: translateY(-1px); }
+       .menu-icon { font-size: 18px; }
+       .selected-check { box-shadow: 0 1px 3px rgba(34, 197, 94, 0.3); transition: transform .2s ease; }
+       .job-inline-btn { transition: all .15s ease; }
+       .job-inline-btn:hover { transform: translateY(-1px); }
+       .brand-icon { filter: drop-shadow(0 1px 2px rgba(0,0,0,0.12)); }
+     </style>
+  </head>
+  <body class="overflow-hidden font-sans">
