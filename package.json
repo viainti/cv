@@ -5,17 +5,15 @@
   "type": "module",
   "description": "Next.js UI for CV Apply Chrome extension",
   "scripts": {
-    "dev": "next dev -p 3001",
-    "build": "next build",
-    "start": "next start -p 3001",
-    "build:css": "tailwindcss -i ./styles/input.css -o ./styles/output.css --minify",
-    "build:popup": "node scripts/build-popup.js",
-    "build:local": "sh ./scripts/build-local.sh",
-    "build:extension": "sh ./scripts/build-chrome-extension.sh",
-    "build:deploy": "sh ./scripts/build-and-deploy.sh",
-    "build:all": "sh ./scripts/build-local.sh",
-    "build:chrome": "npm run build:css && npm run build:extension",
-    "playwright:install": "npx playwright install chromium"
+    "dev": "wxt",
+    "dev:firefox": "wxt --browser firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build --browser firefox",
+    "build:chrome": "wxt build --browser chrome",
+    "zip": "wxt zip",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "jszip": "^3.10.1",
@@ -29,9 +27,12 @@
   "devDependencies": {
     "@types/node": "^22.8.7",
     "@types/react": "^18.3.12",
+    "@vitejs/plugin-react": "^6.0.1",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "vite": "^8.0.11",
+    "wxt": "^0.20.25"
   }
 }

@@ -1,35 +1,45 @@
 # Dependencies
 node_modules/
-
-# Next.js
-.next/
-out/
+.pnpm-store/
 
 # Build outputs
+dist/
+.wxt/
+.output/
 output/
 styles/output.css
-
-# Environment
-.env.local
-.env*.local
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-
-# OS
+*~
 .DS_Store
-Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Next.js (legacy)
+.next/
+out/
 
 # Logs
+logs/
 *.log
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-# Coverage
+# Testing
 coverage/
+.nyc_output/
 
-# Temp
+# Misc
+.turbo/
 *.tmp
 *.temp
+Thumbs.db
